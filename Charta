@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<meta charset=utf-8>
+
+<style>
+body { font-family: sans; margin: 2em auto; width: 14.8cm;}
+</style>
+<title>Charta des Kopulationsgraph-Visualisierungs-Projektes</title>
+<h1>Charta des Kopulationsgraph-Visualisierungs-Projektes</h1>
+
+<h2>Einführung</h2>
+<p>
+Projektkoordination ist ernstes Geschäft. Nachdem <a href="https://github.com/erlehmann/thingsoup"><i>Thingsoup</i></a> an Meinungsverschiedenheiten über Projektziele und Implementationsdetails scheiterte und bei <a href="https://github.com/erlehmann/blinkenworld"><i>Blinkenworld</i></a> aus ähnlichen Gründen zwei grundlegend verschiedene Projekte weitergeführt wurden, bekommt dieses Projekt nun eine Charta, die einen Pfad zur Konfliktlösung aufzeigt.
+</p>
+<p>
+Die in diesem Dokument beschriebene Arbeitsweise ist stark an die der <a href="http://www.whatwg.org/charter"><abbr title="Web Hypertext Application Technology Working Group">WHATWG</abbr></a> angelehnt.
+</p>
+
+<h2>Ziele</h2>
+
+<h3>Produkt</h3>
+<p>
+Ziel des Projektes ist es, einen Webservice zu schaffen, mit dem soziale und sexuelle Beziehungen natürlicher Personen als <a href="https://secure.wikimedia.org/wikipedia/de/wiki/Graph_%28Graphentheorie%29">Multigraphen</a> darstellbar und analysierbar sind. Die Darstellung von Subgraphen sollte <a href="http://www.ctrl-verlust.net/vortrag-das-radikale-recht-des-anderen/">filterbar</a> sein.
+</p>
+
+<h3>Lizenzen</h3>
+<p>
+Softwarebestandteile des Projektes werden unter der <abbr title="GNU's Not Unix!">GNU</abbr> <abbr title="General Public License, Version 3">GPLv3</abbr> und jeder späteren Version der GNU GPL <em>oder</em> einer zur GNU GPLv3 und jeder späteren Version der GNU GPL <a href="http://www.gnu.org/licenses/license-list.html#GPLCompatibleLicenses">kompatiblen Lizenz</a> veröffentlicht.
+</p>
+<p>
+Dateien des Projektes, die nicht als Programm für Datenverarbeitungsanlagen ausführbar oder interpretierbar sein sollen, werden <em>zusätzlich</em> unter der <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.de"><abbr title="Creative Commons">CC</abbr> <abbr title="Namensnennung-Weitergabe unter gleichen Bedingungen 3.0 Unported
+">BY-SA 3.0</abbr></a> und jeder späteren Version der CC BY-SA <em>oder</em> einer zur CC BY-SA und jeder späteren Version der CC BY-SA kompatiblen Lizenz veröffentlicht.
+</p>
+
+<h3>Formate</h3>
+<p>
+Dateien des Projektes müssen ausschließlich in Datenformaten vorliegen, die der von der <i>Free Software Foundation Europe</i> akzeptierten <a href="http://fsfe.org/projects/os/def.de.html">Definiton offener Standards</a> genügen.
+</p>
+
+<h2>Prozess</h2>
+
+<h3>Projektleiter</h3>
+<p>
+Das Projekt hat einen <i>Projektleiter</i>. Aufgabe des Projektleiters ist es, den Konsens der Gruppe zu berücksichtigen. Ist bei einem Thema <em>nach Nennung aller Argumente</em> keine Einigung erkennbar, entscheidet der Projektleiter.
+</p>
+<p>
+Projektleiter ist: Nils Dagsson Moskopp (<i>erlehmann</i>).
+</p>
+
+<h3>Projektmitglieder</h3>
+<p>
+<i>Projektmitglieder</i> sind stimmberechtigte natürliche Personen, die <em>freie</em>, <em>gleiche</em> und <em>nicht geheime</em> Abstimmungen im Rahmen des Projektes durchführen können. Nur einstimmige Abstimmungsergebnisse sind bindend; der Projektleiter ist nicht stimmberechtigt. Projektmitglieder können jederzeit austreten.
+</p>
+<p>
+Im Rahmen des Projektes kann über die folgenden Themen abgestimmt werden:
+</p>
+<ul>
+    <li>Auflösung des Projektes.
+    <li>Zulassung neuer Projektmitglieder.
+    <li>Überstimmung einer einzelnen Entscheidung des Projektleiters.
+    <li>Bestimmung eines neuen Projektleiters, der den bisherigen Projektleiter ersetzt.
+</ul>
+
+<p>
+Projektmitglieder sind:
+</p>
+
+<ul>
+    <li><b>[klassifizierte Information]</b> / <i>booldog</i>
+    <li><b>[klassifizierte Information]</b> / <i>dridde</i>
+    <li>Nils Dagsson Moskopp / <i>erlehmann</i>
+    <li><b>[klassifizierte Information]</b> / <i>fotografiona</i>
+    <li>Christian Heller / <i>plomlompom</i>
+    <li>Daniel Schultz / <i>presseschauer</i>
+    <li><b>[klassifizierte Information]</b> / <i>xbg</i>
+    <li><b>[klassifizierte Information]</b> / <i>waxmuth</i>
+</ul>
+
+<h2>Inkrafttreten</h2>
+
+<p>
+Diese Charta tritt in Kraft, sobald vier natürliche Personen ihr zustimmen. Diese werden die initialen Projektmitglieder.
+</p>
