@@ -1,0 +1,61 @@
+digraph fickileaks {
+    overlap = false;
+    pad = 0.5;
+    sep = 0.5;
+    nodesep = 0.5;
+    splines = true;
+
+    node [fontsize=10];
+
+    subgraph "urls" {
+        node [fontcolor="#204a87"];
+
+        artnoveau [href="http://metamemory.de"]
+        erlehmann [href="http://blog.dieweltistgarnichtso.net"];
+        fotografiona [href="http://fotografiona.wordpress.com/"];
+        irgendwieanders [href="http://irgendwasanderes.wordpress.com/"];
+    }
+ 
+    subgraph "fick" {
+        edge [dir=both, style=solid];
+
+        subgraph "ficken" {
+            edge [color="#000000"];
+
+            artnoveau -> dridde [penwidth=3];
+            birthe -> erlehmann [penwidth=2];
+            dridde -> irgendwieanders [penwidth=4];
+        }
+
+        subgraph "fickverdacht" {
+            edge [color="#808080"];
+
+            artnoveau -> irgendwieanders [penwidth=1];
+        }
+
+        subgraph "fickwunschverdacht" {
+            edge [color="#808080", dir=forward];
+
+            dridde -> birthe [penwidth=1];
+        }
+    }
+
+    subgraph "koch" {
+        edge [dir=forward, style=dotted];
+
+        subgraph "kochen" {
+            edge [color="#000000"];
+
+            birthe -> erlehmann [penwidth=1];
+            fotografiona -> erlehmann [penwidth=4];
+        }
+
+        subgraph "kochverdacht" {
+            edge [color="#808080"];
+    
+            artnoveau -> dridde [penwidth=1];
+            artnoveau -> fotografiona [penwidth=2];
+            fotografiona -> artnoveau [penwidth=4];
+        }
+    }
+}

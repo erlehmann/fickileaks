@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<meta charset=utf-8>
+
+<style>
+* { margin: 0; padding: 0; font-family: sans-serif; }
+html { color: black; background-color: #eeeeec ; padding: 2em; }
+body { line-height: 1.5; width: 800px; margin: auto;
+    -moz-box-shadow: 0px 0px 10px #888; -webkit-box-shadow: 0px 0px 10px #888; box-shadow: 0px 0px 10px #888; }
+header, footer { clear: both; color: black; background-color: #d3d7cf; color: black; padding: 10px 20px; }
+#graph, #controls { height: 494px; }
+#graph { color: black; background-color: white; float: left; width: 494px !important; overflow: scroll; }
+#controls { float: right; width: 306px; }
+#controls > * { margin: 10px 20px; }
+section, header, footer { display: block; }
+section + section { margin-top: 1em; }
+body > header > h1 { font-size: 2em; text-align: center; }
+section h1 { font-size: 1.5em; }
+table * { vertical-align: middle; }
+table td + td, form button, form input { padding: 5px; }
+iframe { border: none; }
+</style>
+
+<title>Fickileaks-Mockup</title>
+
+<header>
+    <h1>Fickileaks</h1>
+</header>
+
+<iframe id="graph" src="gv/graph.svg"></iframe>
+
+<section id="controls">
+    <section>
+        <h1>Beziehungen</h1>
+        <form>
+            <table>
+                <tr>
+                    <td><input type=checkbox checked></td>
+                    <td>Kochen</td>
+                </tr>
+                <tr>
+                    <td><input type=checkbox></td>
+                    <td>Küssen</td>
+                </tr>
+                <tr>
+                    <td><input type=checkbox checked></td>
+                    <td>Sex</td>
+                </tr>
+            </table>
+        </form>
+    </section>
+    <section>
+        <h1>Quellen</h1>
+        <form>
+            <input placeholder="Nickname">
+            <button><img src=img/list-add.png></button>
+            <table>
+                <tr>
+                    <td><input type=checkbox checked></td>
+                    <td><img src=img/facebook.png> Facebook-Beziehungsstatus</td>
+                </tr>
+                <tr>
+                    <td><input type=checkbox checked></td>
+                    <td><img src=img/wikileaks-ico.gif> Wikileaks-Veröffentlichungen</td>
+                </tr>
+                <tr>
+                    <td><input type=checkbox checked></td>
+                    <td><i>artnoveau</i></td>
+                </tr>
+                <tr>
+                    <td><input type=checkbox checked></td>
+                    <td><i>dridde</i></td>
+                </tr>
+                <tr>
+                    <td><input type=checkbox checked></td>
+                    <td><i>erlehmann</i></td>
+                </tr>
+                <tr>
+                    <td><input type=checkbox checked></td>
+                    <td><i>fotografiona</i></td>
+                </tr>
+            </table>
+        </form>
+    </section>
+<!--
+    <section>
+        <h1>Filter</h1>
+        <form>
+            <label for=range>Reichweite</label>
+            <input id=range type=range min=1 max=5 step=1 value=2 oninput>
+        </form>
+        <form>
+            <label for=yearbegin>Anfangszeit</label>
+            <input id=yearbegin type=datetime-local value="1970-01-01T00:00" step="86400">
+        </form>
+        <form>
+            <label for=yearend>Endzeit</label>
+            <input id=yearend type=datetime-local value="2010-12-21T00:00" step="86400">
+        </form>
+    </section>
+-->
+</section>
+
+<footer>
+    <p>
+        Fickileaks ist eine <em>kritische Internetplattform</em>, auf der Vermutungen über Beziehungen zwischen Leuten gesammelt und veröffentlicht werden. Fickileaks geht dabei von einem <em>öffentlichen Interesse</em> an den Informationen aus. <a href="https://github.com/erlehmann/fickileaks/i">Fickileaks ist freie Software.</a>
+    </p>
+</footer>
