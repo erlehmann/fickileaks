@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<meta charset=utf-8>
+
+<link href=css/style.css rel=stylesheet>
+
+<title>Fickileaks-Mockup</title>
+
+<header>
+    <h1>Fickileaks</h1>
+</header>
+
+<section>
+    <script>
+        function removeRow(element) {
+            var row = element.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+    </script>
+    <h1>Vermutungen bearbeiten <span class="author">erlehmann</span></h1>
+    <form>
+        <table class="edit">
+            <tr>
+                <td><input placeholder="Nickname oder URL"></td>
+                <td>
+                    <select>
+                        <option>möchte</option>
+                        <option>hatte</option>
+                    </select>
+                </td>
+                <td>
+                    <select>
+                        <option>Sex</option>
+                        <option>Knutschen</option>
+                        <option>Kochen</option>
+                    </select>
+                    <span class="right">mit</span>
+                </td>
+                <td><input placeholder="Nickname oder URL"></td>
+                <td><button><img src=img/list-add.png></button></td>
+            </tr>
+            <tr>
+                <td>artnoveau <span class="url">http://metamemory.de</span></td>
+                <td>hatte</td>
+                <td>Sex <span class="right">mit</span></td>
+                <td>irgendwieanders <span class="url">http://irgendwas…</span></td>
+                <td><button onclick="removeRow(this)"><img src=img/list-remove.png></button></td>
+            </tr>
+            <tr>
+                <td>artnoveau <span class="url">http://metamemory.de</span></td>
+                <td>möchte</td>
+                <td>Kochen <span class="right">mit</span></td>
+                <td>fotografiona <span class="url">http://fotografiona…</span></td>
+                <td><button onclick="removeRow(this)"><img src=img/list-remove.png></button></td>
+            </tr>
+            <tr>
+                <td>fotografiona <span class="url">http://fotografiona…</span></td>
+                <td>möchte</td>
+                <td>Kochen <span class="right">mit</span></td>
+                <td>erlehmann <span class="url">http://blog.dieweltist…</span></td>
+                <td><button onclick="removeRow(this)"><img src=img/list-remove.png></button></td>
+            </tr>
+        </table>
+        <input type=submit>
+    </form>
+</section>
+
+<footer>
+    <p>
+        Fickileaks ist eine <em>kritische Internetplattform</em>, auf der Vermutungen über Beziehungen zwischen Leuten gesammelt und veröffentlicht werden. Fickileaks geht dabei von einem <em>öffentlichen Interesse</em> an den Informationen aus. <a href="https://github.com/erlehmann/fickileaks">Fickileaks ist freie Software.</a>
+    </p>
+</footer>
