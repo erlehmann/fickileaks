@@ -24,6 +24,7 @@ fickileaks/lib/app_globals.py
 fickileaks/lib/base.py
 fickileaks/lib/helpers.py
 fickileaks/model/__init__.py
+fickileaks/model/meta.py
 fickileaks/public/bg.png
 fickileaks/public/favicon.ico
 fickileaks/public/index.html
