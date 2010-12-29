@@ -9,7 +9,7 @@ class Person(Entity):
     wishes = OneToMany('Relation')
 
     def __repr__(self):
-        return 'a' #'<Person %s, %s>' % (self.names, self.urls)
+        return '<Person %s, %s>' % (self.names, self.urls)
 
 class Url(Entity):
     url = Field(Unicode(255))
