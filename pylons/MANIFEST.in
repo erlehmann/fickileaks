@@ -1,0 +1,3 @@
+include fickileaks/config/deployment.ini_tmpl
+recursive-include fickileaks/public *
+recursive-include fickileaks/templates *
