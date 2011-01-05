@@ -48,7 +48,7 @@ class Url(Entity):
 
 class Relation(Entity):
     participants = ManyToMany('Person')
-    type = Field(Unicode())  # FIXME: build custom relation data type
+    type = Field(Enum("FUCK", "KISS"))
 
     created = Field(DateTime, default=datetime.now)
     creator = ManyToOne('User')
