@@ -5,12 +5,12 @@ from datetime import datetime
 
 
 class User(Entity):
-    email = Field(Unicode(), primary_key=True)  # FIXME: build custom email data type
+    email = Field(Unicode(), primary_key=True)  # FIXME: email data type
     password = Field(Unicode())  # FIXME: use hashes instead of plaintext
 
     # every user has its own relationship “universe”
-    persons = OneToMany('Person')  # a user has many beliefs about persons
-    relations = OneToMany('Relation')  # a user has many beliefs about relations
+    persons = OneToMany('Person')  # user has many beliefs about persons
+    relations = OneToMany('Relation')  # user has many beliefs about relations
 
     def __init__(self, email, password):
         self.email = email
@@ -24,6 +24,7 @@ class User(Entity):
 
     def addRelation(self, relation):
         self.relations.append(relation)
+
 
 class Person(Entity):
     # persons have many names and many URLs
@@ -44,6 +45,7 @@ class Person(Entity):
     def addUrl(self, url):
         self.urls.append(url)
 
+
 class Name(Entity):
     name = Field(Unicode(), primary_key=True)
     person = ManyToMany('Person')
@@ -56,8 +58,9 @@ class Name(Entity):
     def __repr__(self):
         return '<Name %s>' % (self.name)
 
+
 class Url(Entity):
-    url = Field(Unicode(), primary_key=True)  # FIXME: build custom URL data type
+    url = Field(Unicode(), primary_key=True)  # FIXME: URL data type
     person = ManyToOne('Person')  # a person can have many URLs
 
     created = Field(DateTime, default=datetime.now)
@@ -67,6 +70,7 @@ class Url(Entity):
 
     def __repr__(self):
         return '<Url %s>' % (self.url)
+
 
 class Relation(Entity):
     participants = ManyToMany('Person')
@@ -79,7 +83,8 @@ class Relation(Entity):
         self.type = type
 
     def __repr__(self):
-        return '<Relation %s: %s>' % (self.type, [n.names for n in self.participants])
+        names = [person.names for person in self.participants]
+        return '<Relation %s: %s>' % (self.type, names)
 
     def addPerson(self, person):
         self.participants.append(person)
