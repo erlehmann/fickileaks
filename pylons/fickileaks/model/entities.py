@@ -5,7 +5,7 @@ from datetime import datetime
 
 
 class User(Entity):
-    email = Field(Unicode())  # FIXME: build custom email data type
+    email = Field(Unicode(), primary_key=True)  # FIXME: build custom email data type
     password = Field(Unicode())  # FIXME: use hashes instead of plaintext
 
     # every user has its own relationship “universe”
@@ -29,7 +29,7 @@ class Person(Entity):
         return '<Person %s, %s>' % (self.names, self.urls)
 
 class Name(Entity):
-    name = Field(Unicode())
+    name = Field(Unicode(), primary_key=True)
     person = ManyToMany('Person')
 
     created = Field(DateTime, default=datetime.now)
@@ -38,7 +38,7 @@ class Name(Entity):
         return '<Name %s>' % (self.name)
 
 class Url(Entity):
-    url = Field(Unicode())  # FIXME: build custom URL data type
+    url = Field(Unicode(), primary_key=True)  # FIXME: build custom URL data type
     person = ManyToOne('Person')  # a person can have many URLs
 
     created = Field(DateTime, default=datetime.now)
