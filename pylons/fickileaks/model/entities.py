@@ -31,7 +31,7 @@ class User(Entity):
 class Person(Entity):
     # persons have many names and many URLs
     names = ManyToMany('Name')
-    urls = ManyToMany('Url')  # many URLs can denote one person
+    urls = ManyToMany('Url')  # FIXME: URL should be unique among Person objects of a single user
 
     relations = ManyToMany('Relation')
 
@@ -84,7 +84,7 @@ class Name(Entity):
 
 class Url(Entity):
     url = Field(Unicode(), primary_key=True)  # FIXME: URL data type
-    person = ManyToOne('Person')  # a person can have many URLs
+    person = ManyToMany('Person')
 
     created = Field(DateTime, default=datetime.now)
 
