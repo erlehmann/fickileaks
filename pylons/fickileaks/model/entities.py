@@ -97,17 +97,21 @@ class Url(Entity):
 
 class Relation(Entity):
     participants = ManyToMany('Person')
-    type = Field(Enum("FUCK", "KISS"))
+    type = Field(Enum('FUCK', 'KISS'))
 
     created = Field(DateTime, default=datetime.now)
     creator = ManyToOne('User')
 
-    def __init__(self, type):
+    def __init__(self, creator, type, participants):
+        self.creator = creator
         self.type = type
+
+        for participant in participants:
+            self.addParticipant(participant)
 
     def __repr__(self):
         names = [person.names for person in self.participants]
         return '<Relation %s: %s>' % (self.type, names)
 
-    def addPerson(self, person):
+    def addParticipant(self, person):
         self.participants.append(person)
