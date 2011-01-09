@@ -7,7 +7,7 @@ from sqlalchemy.orm.exc import NoResultFound
 
 
 class User(Entity):
-    email = Field(Unicode(), primary_key=True)  # FIXME: email data type
+    email = Field(Unicode())  # FIXME: email data type
     password = Field(Unicode())  # FIXME: use hashes instead of plaintext
 
     # every user has its own relationship “universe”
