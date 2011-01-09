@@ -3,6 +3,8 @@
 from elixir import *
 from datetime import datetime
 
+from sqlalchemy.orm.exc import NoResultFound
+
 
 class User(Entity):
     email = Field(Unicode(), primary_key=True)  # FIXME: email data type
@@ -29,20 +31,41 @@ class User(Entity):
 class Person(Entity):
     # persons have many names and many URLs
     names = ManyToMany('Name')
-    urls = OneToMany('Url')  # many URLs can denote one person
+    urls = ManyToMany('Url')  # many URLs can denote one person
 
     relations = ManyToMany('Relation')
 
     created = Field(DateTime, default=datetime.now)
     creator = ManyToOne('User')
 
+    def __init__(self, creator, namestrings, urlstrings):
+        self.creator = creator
+
+        for namestring in namestrings:
+            self.addName(namestring)
+
+        for urlstring in urlstrings:
+            self.addUrl(urlstring)
+
     def __repr__(self):
         return '<Person %s, %s>' % (self.names, self.urls)
 
-    def addName(self, name):
+    def addName(self, namestring):
+        try:
+            # if Name object with corresponding namestring is available, use it
+            name = Name.query.filter_by(name=namestring).one()
+        except NoResultFound:
+            name = Name(namestring)
+
         self.names.append(name)
 
-    def addUrl(self, url):
+    def addUrl(self, urlstring):
+        try:
+            # if Url object with corresponding urlstring is available, use it
+            url = Url.query.filter_by(url=urlstring).one()
+        except NoResultFound:
+            url = Url(urlstring)
+
         self.urls.append(url)
 
 
