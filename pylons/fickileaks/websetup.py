@@ -6,7 +6,7 @@ import pylons.test
 from fickileaks.config.environment import load_environment
 from fickileaks.model import Session, metadata
 
-from fickileaks.model.entities import User, Name, Url, Person, Relation
+from fickileaks.model.entities import User, Person, Relation
 
 log = logging.getLogger(__name__)
 
