@@ -1,1 +1,3 @@
 *.pyc
+*.mako.py
+development.db
