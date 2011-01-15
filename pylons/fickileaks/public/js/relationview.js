@@ -94,115 +94,6 @@ var g = new $jit.RGraph({
     levelDistance: 200
 });
 
-var json = [
-    {
-        'id': 'http://metamemory.de/',
-        'name': 'artnoveau',
-        'adjacencies': [
-            'http://dieweltistgarnichtso.net',
-            'http://tinkar.tumblr.com/',
-            'http://moeffju.net',
-            'http://mnt.mn',
-            'http://twitter.com/darktwit',
-            'http://plomlompom.de',
-            'http://twitter.com/le_chatte_noire',
-            'http://dridde.net',
-            'http://irgendwasanderes.wordpress.com'
-        ]
-    }, {
-        'id': 'http://dieweltistgarnichtso.net',
-        'name': 'erlehmann',
-        'adjacencies': [
-            'http://tinkar.tumblr.com/',
-            'http://twitter.com/le_chatte_noire',
-            'http://irgendwasanderes.wordpress.com'
-        ]
-    }, {
-        'id': 'http://tinkar.tumblr.com/',
-        'name': 'Tinkar',
-        'adjacencies': [
-            'http://moeffju.net',
-            'http://twitter.com/ledentist'
-        ]
-    }, {
-        'id': 'http://moeffju.net',
-        'name': 'moeffju',
-        'adjacencies': [
-            'http://julia-seeliger.de',
-            'http://kathrinpassig.kulturidustrie.com',
-            'http://twitter.com/darktwit'
-        ]
-    }, {
-        'id': 'http://mnt.mn',
-        'name': 'mntmn',
-        'adjacencies': [
-            'http://irgendwasanderes.wordpress.com'
-        ]
-    }, {
-        'id': 'http://julia-seeliger.de',
-        'name': 'zeitrafferin',
-        'adjacencies': [
-            'http://netzpolitik.org',
-            'http://mspr0.de'
-        ]
-    }, {
-        'id': 'http://twitter.com/darktwit',
-        'name': 'darktwit',
-        'adjacencies': [
-            'http://kathrinpassig.kulturidustrie.com',
-            'http://rampke.net',
-            'http://adrianlang.de/'
-        ]
-    }, {
-        'id': 'http://plomlompom.de',
-        'name': 'plomlompom'
-    }, {
-        'id': 'http://kathrinpassig.kulturidustrie.com',
-        'name': 'bilch'
-    }, {
-        'id': 'http://twitter.com/le_chatte_noire',
-        'name': 'änne',
-        'adjacencies': [
-            'http://irgendwasanderes.wordpress.com'
-        ]
-    }, {
-        'id': 'http://dridde.net',
-        'name': 'dridde',
-        'adjacencies': [
-            'http://irgendwasanderes.wordpress.com'
-        ]
-    }, {
-        'id': 'http://irgendwasanderes.wordpress.com',
-        'name': 'irgendwieanders',
-        'adjacencies': [
-            'http://twitter.com/ledentist',
-            'http://adrianlang.de/'
-        ]
-    }, {
-        'id': 'http://rampke.net',
-        'name': 'matthiasr'
-    }, {
-        'id': 'http://netzpolitik.org',
-        'name': 'markusb'
-    },
-    {
-        'id': 'http://mspr0.de',
-        'name': 'mspro',
-        'adjacencies': [
-            'http://fotografiona.wordpress.com'
-        ]
-    }, {
-        'id': 'http://fotografiona.wordpress.com',
-        'name': 'fotografiona'
-    }, {
-        'id': 'http://twitter.com/ledentist',
-        'name': 'ledentist'
-    }, {
-        'id': 'http://adrianlang.de/',
-        'name': 'adrianlang'
-        }
-];
-
 function radiusFix(g) {
     // radius of circles should be proportional to number of adjacencies
     g.graph.eachNode(
@@ -218,8 +109,6 @@ function radiusFix(g) {
     );
 }
 
-//g.loadJSON(json);
-
 var req = new XMLHttpRequest();
 req.open('GET', 'infovis', true);
 req.onreadystatechange = function (aEvt) {
@@ -231,8 +120,7 @@ req.onreadystatechange = function (aEvt) {
             radiusFix(g)
             g.refresh()
         } else {
-            //alert("Could not reach fickileaks JSON API.");
-            console.log("Could not reach fickileaks JSON API.");
+            alert("Could not reach fickileaks JSON API.");
         }
     }
 };
