@@ -79,6 +79,9 @@ class RelationviewController(BaseController):
                     }
                 }
 
+        # fold nodes to merge all nodes who share URLs
+        # the outer loop is necessary since merges on one pass can enable
+        # further merges on subsequent passes.
                 # helper function to insert node into nodes
                 def insertNode(nodes,node):
                     urls = set(node['data']['urls'])
@@ -158,7 +161,7 @@ class RelationviewController(BaseController):
 
                     node['adjacencies'].append(adjacency)
 
-        # fold edges
+        # fold edges to merge all edges with same nodes and type
         for node in nodeSet(nodes):
             result = []
 
@@ -172,6 +175,7 @@ class RelationviewController(BaseController):
                     type = adjacency['data']['type']
                     resultType = resultAdjacency['data']['type']
 
+                    # merge edges if type and target node id are the same
                     if ((nodeTo == resultNodeTo) and \
                         (type == resultType)):
                         resultAdjacency['data']['$lineWidth'] += adjacency['data']['$lineWidth']
