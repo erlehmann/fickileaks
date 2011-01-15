@@ -45,7 +45,7 @@ class RelationviewController(BaseController):
     def infovis(self):
         query = Relation.query.all()
 
-        nodes = []
+        nodes = {}
 
         # create nodes
         for r in query:
@@ -79,61 +79,61 @@ class RelationviewController(BaseController):
                     }
                 }
 
-                nodes.append(node)
-
-        result = []
-
-        # fold nodes
-        for i in range(len(nodes)-1):  # FIXME: brute force is not efficient
-            for node in nodes:
-                addNode = True  # assume node will be added
-
-                for resultNode in result:
+                # helper function to insert node into nodes
+                def insertNode(nodes,node):
                     urls = set(node['data']['urls'])
-                    resultUrls = set(resultNode['data']['urls'])
+                    resultNode = node # if we don't find any matching URL below, it's just a new node
+                    for url in urls:
+                        # merge nodes, if one with this URL already exists and they are not the same object (i.e. already merged)
+                        if url in nodes and node is not nodes[url]:
+                            resultNode = nodes[url]     # merge with the first node we find sharing a URL
 
-                    # merge nodes if two of them share the same URL
-                    if (urls.intersection(resultUrls)):
-                        resultNode['data']['urls'] = list(urls.union(resultUrls))
+                            resultNode['data']['urls'] = list(set(urls).union(set(resultNode['data']['urls'])))
 
-                        names = set(node['data']['names'])
-                        resultNames = set(resultNode['data']['names'])
-                        resultNode['data']['names'] = list(names.union(resultNames))
+                            names = set(node['data']['names'])
+                            resultNames = set(resultNode['data']['names'])
+                            resultNode['data']['names'] = list(names.union(resultNames))
 
-                        for type in node['data']['relations']:
-                            relations = node['data']['relations'][type]
+                            for type in node['data']['relations']:
+                                relations = node['data']['relations'][type]
 
-                            try:
-                                resultRelations = resultNode['data']['relations'][type]
-                            except KeyError:
-                                # resultNode has no relations of that type yet
-                                resultNode['data']['relations'][type] = relations
-                                break
+                                try:
+                                    resultRelations = resultNode['data']['relations'][type]
+                                except KeyError:
+                                    # resultNode has no relations of that type yet
+                                    resultNode['data']['relations'][type] = relations
+                                    break
 
-                            if (relations and resultRelations):  # both not None
-                                resultNode['data']['relations'][type].extend(relations)
+                                if (relations and resultRelations):  # both not None
+                                    resultNode['data']['relations'][type].extend(relations)
+                            break # do not look for more matching URLs, this will be done below
 
-                        # do not add current node to result
-                        addNode = False
+                    for url in resultNode['data']['urls']:
+                        urlInNodes = url in nodes
+                        if not urlInNodes:
+                            nodes[url] = resultNode
+                        elif resultNode is not nodes[url]: # we need to merge resultNode and some other node already in nodes
+                            temp = nodes[url]           # yank out the other node
+                            nodes[url] = resultNode     # replace it with resultNode
+                            insertNode(nodes,temp)       # and re-merge it in (repeat through recursion until all nodes sharing URLs merged)
+                        else:
+                            pass
 
-                if (addNode):
-                    result.append(node)
+                insertNode(nodes,node)
 
-            nodes = result
-            result = []
+        def getNodeByUrl(nodes, url):
+            return nodes[url]
+
+        def nodeSet(nodes):
+            return set(node.values())
 
         # create names and ids
-        for node in nodes:
+        for node in nodeSet(nodes):
             node['name'] = node['data']['names'][0]
             node['id'] = node['data']['urls'][0]
 
-        def getNodeByUrl(nodes, url):
-            for node in nodes:
-                if url in node['data']['urls']:
-                    return node
-
         # create edges
-        for node in nodes:
+        for node in nodeSet(nodes):
             node['adjacencies'] = []
 
             for type in node['data']['relations']:
@@ -152,7 +152,7 @@ class RelationviewController(BaseController):
                     node['adjacencies'].append(adjacency)
 
         # fold edges
-        for node in nodes:
+        for node in nodeSet(nodes):
             result = []
 
             for adjacency in node['adjacencies']:
@@ -180,7 +180,7 @@ class RelationviewController(BaseController):
 
 
         # get rid of temporary edge data
-        for node in nodes:
+        for node in nodeSet(nodes):
             del node['data']['relations']
 
-        return nodes
+        return list(nodeSet(nodes))
