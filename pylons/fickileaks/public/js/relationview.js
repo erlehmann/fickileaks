@@ -31,9 +31,27 @@ $jit.RGraph.Plot.NodeTypes.implement({
 });
 
 $jit.RGraph.Plot.EdgeTypes.implement({
-    'rainbow-relation': {
-        'render': function() {
-            // TODO
+    'stroke-line': {
+        'render': function(edge, canvas) {
+            var c = canvas.getCtx();
+            var posFrom = edge.nodeFrom.getPos().toComplex();
+            var posTo = edge.nodeTo.getPos().toComplex();
+
+            if (edge.data.type === 'FUCK') {
+                c.strokeStyle = '#ef2929';
+            }
+
+            if (edge.data.type === 'KISS') {
+                c.strokeStyle = '#729fcf';
+            }
+
+            var cp1 = posFrom.add(posTo.scale(0.5));
+            var cp2 = posFrom.scale(0.5).add(posTo);
+
+            c.beginPath();
+            c.moveTo(posFrom.x, posFrom.y)
+            c.bezierCurveTo(cp1.x, cp1.y, cp2.x, cp2.y, posTo.x, posTo.y);
+            c.stroke()
         }
     }
 });
@@ -60,7 +78,7 @@ var g = new $jit.RGraph({
 
     Edge: {
         overridable: true,
-        type: 'line',
+        type: 'stroke-line',
         color: '#fcaf3e'
     },
 
