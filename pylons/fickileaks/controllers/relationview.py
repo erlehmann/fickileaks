@@ -146,8 +146,7 @@ class RelationviewController(BaseController):
                         'nodeTo': targetNode['id'],
                         'data': {
                             'type': type,
-                            'creators': [relation['creator']],
-                            '$lineWidth': 1
+                            'creators': [relation['creator']]
                         }
                     }
 
@@ -170,7 +169,6 @@ class RelationviewController(BaseController):
                     # merge edges if type and target node id are the same
                     if ((nodeTo == resultNodeTo) and \
                         (type == resultType)):
-                        resultAdjacency['data']['$lineWidth'] += adjacency['data']['$lineWidth']
                         resultAdjacency['data']['creators'].extend(adjacency['data']['creators'])
 
                         addAdjacency = False
