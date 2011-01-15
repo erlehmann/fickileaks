@@ -39,7 +39,7 @@ def setup_app(command, conf, vars):
 
     # User bob claims to be aware of the existence of these persons
     bp0 = Person(bob, ["Alise"], ["http://example.net/~alice"])
-    bp1 = Person(bob, ["me"], ["http://example.com/bob81"])
+    bp1 = Person(bob, ["Bobby"], ["http://example.com/bob81"])
     bp2 = Person(bob, ["Dave the Face"], ["http://example.com/davedavedave"])
 
     # User bob claims to be aware of the existence of these relationships
@@ -50,8 +50,13 @@ def setup_app(command, conf, vars):
     # User charlie claims to be aware of the existence of these persons
     cp0 = Person(charlie, ["Alice"], ["http://example.com/alice72", "http://example.net/~alice"])
     cp1 = Person(charlie, ["Bob from Berlin"], ["http://example.com/bob81"])
+    cp2 = Person(charlie, ["Davey"], ["http://example.com/davedavedave"])
+    cp3 = Person(charlie, ["Emily", "Em"], ["http://emily.example.net"])
 
     # User charlie claims to be aware of the existence of these relationships
     cr0 = Relation(charlie, 'KISS', [cp0, cp1])
+    cr1 = Relation(charlie, 'KISS', [cp0, cp2])
+    cr2 = Relation(charlie, 'KISS', [cp1, cp3])
+    cr3 = Relation(charlie, 'FUCK', [cp2, cp3])
 
     Session.commit()
