@@ -84,7 +84,7 @@ class RelationviewController(BaseController):
         result = []
 
         # fold nodes
-        for i in xrange(len(nodes)):  # FIXME: brute force is not efficient
+        for i in range(len(nodes)-1):  # FIXME: brute force is not efficient
             for node in nodes:
                 addNode = True  # assume node will be added
 
