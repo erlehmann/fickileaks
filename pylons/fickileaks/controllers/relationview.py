@@ -125,7 +125,14 @@ class RelationviewController(BaseController):
             return nodes[url]
 
         def nodeSet(nodes):
-            return set(node.values())
+            d = {}
+            r = []
+            for node in nodes.values():
+                id = node['data']['urls'][0]
+                if id not in d:
+                    d[id] = 1
+                    r.append(node)
+            return r
 
         # create names and ids
         for node in nodeSet(nodes):
