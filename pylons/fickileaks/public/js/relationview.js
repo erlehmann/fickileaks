@@ -163,7 +163,7 @@ function radiusFix(g) {
 }
 
 var req = new XMLHttpRequest();
-req.open('GET', 'infovis', true);
+req.open('GET', 'infovis_dummy', true);
 req.onreadystatechange = function (aEvt) {
     if (req.readyState == 4) {
         if(req.status == 200) {
