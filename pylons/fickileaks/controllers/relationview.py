@@ -8,6 +8,7 @@ from fickileaks.lib.base import BaseController, render
 from fickileaks.model import Relation, Person
 
 from datetime import datetime
+from random import random
 
 log = logging.getLogger(__name__)
 
@@ -183,5 +184,284 @@ class RelationviewController(BaseController):
         # get rid of temporary edge data
         for node in nodes:
             del node['data']['relations']
+
+        return nodes
+
+
+    @jsonify
+    def infovis_dummy(self):
+        """ dummy data for infovis, remove when infovis controller is mature """
+
+        def sometime():
+            offset = int(random()*1000)
+            return datetime.fromordinal(offset + 733000).isoformat()
+
+        nodes = [
+            {
+                'id': 'alice',
+                'name': 'Alice Alisson',
+                'data': {
+                    'names': [],
+                    'urls': []
+                },
+                'adjacencies': [
+                    {
+                        'nodeTo': 'bob',
+                        'data': {
+                            'relations': [
+                                {
+                                    'type': 'GROPE',
+                                    'creators': [
+                                        {
+                                            'creator': 'alice@example.org',
+                                            'timestamp': sometime()
+                                        },
+                                        {
+                                            'creator': 'bob@example.org',
+                                            'timestamp': sometime()
+                                        },
+                                        {
+                                            'creator': 'charlie@example.org',
+                                            'timestamp': sometime()
+                                        }
+                                    ]
+                                },
+                                {
+                                    'type': 'KISS',
+                                    'creators': [
+                                        {
+                                            'creator': 'alice@example.org',
+                                            'timestamp': sometime()
+                                        },
+                                        {
+                                            'creator': 'bob@example.org',
+                                            'timestamp': sometime()
+                                        },
+                                        {
+                                            'creator': 'charlie@example.org',
+                                            'timestamp': sometime()
+                                        }
+                                    ]
+                                },
+                                {
+                                    'type': 'FUCK',
+                                    'creators': [
+                                        {
+                                            'creator': 'alice@example.org',
+                                            'timestamp': sometime()
+                                        },
+                                        {
+                                            'creator': 'bob@example.org',
+                                            'timestamp': sometime()
+                                        }
+                                    ]
+                                },
+                                {
+                                    'type': 'ORAL',
+                                    'creators': [
+                                        {
+                                            'creator': 'alice@example.org',
+                                            'timestamp': sometime()
+                                        },
+                                        {
+                                            'creator': 'bob@example.org',
+                                            'timestamp': sometime()
+                                        }
+                                    ]
+                                },
+                                {
+                                    'type': 'ANAL',
+                                    'creators': [
+                                        {
+                                            'creator': 'alice@example.org',
+                                            'timestamp': sometime()
+                                        },
+                                        {
+                                            'creator': 'bob@example.org',
+                                            'timestamp': sometime()
+                                        }
+                                    ]
+                                },
+                                {
+                                    'type': 'SM',
+                                    'creators': [
+                                        {
+                                            'creator': 'alice@example.org',
+                                            'timestamp': sometime()
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                'id': 'bob',
+                'name': 'Bob Bobsen',
+                'data': {
+                    'names': [],
+                    'urls': []
+                },
+                'adjacencies': [
+                    {
+                        'nodeTo': 'charlie',
+                        'data': {
+                            'relations': [
+                                {
+                                    'type': 'GROPE',
+                                    'creators': [
+                                        {
+                                            'creator': 'alice@example.org',
+                                            'timestamp': sometime()
+                                        },
+                                        {
+                                            'creator': 'bob@example.org',
+                                            'timestamp': sometime()
+                                        },
+                                        {
+                                            'creator': 'charlie@example.org',
+                                            'timestamp': sometime()
+                                        }
+                                    ]
+                                },
+                                {
+                                    'type': 'KISS',
+                                    'creators': [
+                                        {
+                                            'creator': 'bob@example.org',
+                                            'timestamp': sometime()
+                                        },
+                                        {
+                                            'creator': 'charlie@example.org',
+                                            'timestamp': sometime()
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                'id': 'charlie',
+                'name': 'Charlie Charlesson',
+                'data': {
+                    'names': [],
+                    'urls': []
+                },
+                'adjacencies': [
+                    {
+                        'nodeTo': 'alice',
+                        'data': {
+                            'relations': [
+                                {
+                                    'type': 'KISS',
+                                    'creators': [
+                                        {
+                                            'creator': 'charlie@example.org',
+                                            'timestamp': sometime()
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }, {
+                        'nodeTo': 'eve',
+                        'data': {
+                            'relations': [
+                                {
+                                    'type': 'KISS',
+                                    'creators': [
+                                        {
+                                            'creator': 'alice@example.org',
+                                            'timestamp': sometime()
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }, {
+                        'nodeTo': 'zoe',
+                        'data': {
+                            'relations': [
+                                {
+                                    'type': 'GROPE',
+                                    'creators': [
+                                        {
+                                            'creator': 'alice@example.org',
+                                            'timestamp': sometime()
+                                        }
+                                    ]
+                                }, {
+                                    'type': 'KISS',
+                                    'creators': [
+                                        {
+                                            'creator': 'alice@example.org',
+                                            'timestamp': sometime()
+                                        }
+                                    ]
+                                }, {
+                                    'type': 'FUCK',
+                                    'creators': [
+                                        {
+                                            'creator': 'alice@example.org',
+                                            'timestamp': sometime()
+                                        }
+                                    ]
+                                }, {
+                                    'type': 'ORAL',
+                                    'creators': [
+                                        {
+                                            'creator': 'alice@example.org',
+                                            'timestamp': sometime()
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }, {
+                'id': 'dave',
+                'name': 'Dave Davidsson',
+                'data': {
+                    'names': [],
+                    'urls': []
+                },
+                'adjacencies': [
+                    {
+                        'nodeTo': 'alice',
+                        'data': {
+                            'relations': [
+                                {
+                                    'type': 'KISS',
+                                    'creators': [
+                                        {
+                                            'creator': 'charlie@example.org',
+                                            'timestamp': sometime()
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }, {
+                'id': 'eve',
+                'name': 'Eve Evil',
+                'data': {
+                    'names': [],
+                    'urls': []
+                }
+            }, {
+                'id': 'zoe',
+                'name': 'Zoe Zoolander',
+                'data': {
+                    'names': [],
+                    'urls': []
+                }
+            }
+        ]
 
         return nodes
