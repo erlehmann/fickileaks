@@ -30,31 +30,64 @@ $jit.RGraph.Plot.NodeTypes.implement({
     }
 });
 
+function correctWidth(width) {
+    return width*2;
+}
+
 $jit.RGraph.Plot.EdgeTypes.implement({
-    'stroke-line': {
+    'rainbow-line': {
         'render': function(edge, canvas) {
             var c = canvas.getCtx();
             var posFrom = edge.nodeFrom.getPos().toComplex();
             var posTo = edge.nodeTo.getPos().toComplex();
 
-            if (edge.data.type === 'FUCK') {
-                c.strokeStyle = '#ef2929';
+            var totalWidth = 0;
+            for (i in edge.data.relations) {
+                totalWidth += correctWidth(edge.data.relations[i].creators.length);
             }
 
-            if (edge.data.type === 'KISS') {
-                c.strokeStyle = '#729fcf';
+            for (i in edge.data.relations) {
+                switch (edge.data.relations[i].type) {
+                    case "GROPE":
+                        c.strokeStyle = '#ef2929'; // Scarlet Red
+                        break;
+
+                    case "KISS":
+                        c.strokeStyle = '#fcaf3e'; // Orange
+                        break;
+
+                    case "FUCK":
+                        c.strokeStyle = '#fce94f'; // Butter
+                        break;
+
+                    case "ORAL":
+                        c.strokeStyle = '#8ae234'; // Chameleon
+                        break;
+
+                    case "ANAL":
+                        c.strokeStyle = '#729fcf'; // Sky Blue
+                        break;
+
+                    case "SM":
+                        c.strokeStyle = '#ad7fa8'; // Plum
+                        break;
+                }
+
+                var level1 = edge.nodeTo.pos.rho/g.config.levelDistance
+                var level2 = edge.nodeFrom.pos.rho/g.config.levelDistance
+
+                var cp1 = posFrom.add(posTo.scale(1/Math.pow(level1+1, 2)));
+                var cp2 = posFrom.scale(1/Math.pow(level2+1, 2)).add(posTo);
+
+                var width = correctWidth(edge.data.relations[i].creators.length);
+                var o = (i * width) - totalWidth/2;
+                c.lineWidth = width
+
+                c.beginPath();
+                c.moveTo(posFrom.x+o, posFrom.y)
+                c.bezierCurveTo(cp1.x+o, cp1.y, cp2.x+o, cp2.y, posTo.x+o, posTo.y);
+                c.stroke()
             }
-
-            var level1 = edge.nodeTo.pos.rho/g.config.levelDistance
-            var level2 = edge.nodeFrom.pos.rho/g.config.levelDistance
-
-            var cp1 = posFrom.add(posTo.scale(1/Math.pow(level1+1, 2)));
-            var cp2 = posFrom.scale(1/Math.pow(level2+1, 2)).add(posTo);
-
-            c.beginPath();
-            c.moveTo(posFrom.x, posFrom.y)
-            c.bezierCurveTo(cp1.x, cp1.y, cp2.x, cp2.y, posTo.x, posTo.y);
-            c.stroke()
         }
     }
 });
@@ -81,8 +114,7 @@ var g = new $jit.RGraph({
 
     Edge: {
         overridable: true,
-        type: 'stroke-line',
-        color: '#fcaf3e'
+        type: 'rainbow-line'
     },
 
     Label: {
