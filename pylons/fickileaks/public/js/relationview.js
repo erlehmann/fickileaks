@@ -45,8 +45,11 @@ $jit.RGraph.Plot.EdgeTypes.implement({
                 c.strokeStyle = '#729fcf';
             }
 
-            var cp1 = posFrom.add(posTo.scale(0.5));
-            var cp2 = posFrom.scale(0.5).add(posTo);
+            var level1 = edge.nodeTo.pos.rho/g.config.levelDistance
+            var level2 = edge.nodeFrom.pos.rho/g.config.levelDistance
+
+            var cp1 = posFrom.add(posTo.scale(1/Math.pow(level1+1, 2)));
+            var cp2 = posFrom.scale(1/Math.pow(level2+1, 2)).add(posTo);
 
             c.beginPath();
             c.moveTo(posFrom.x, posFrom.y)
