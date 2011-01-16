@@ -97,7 +97,7 @@ class Url(Entity):
 
 class Relation(Entity):
     participants = ManyToMany('Person')
-    type = Field(Enum('FUCK', 'KISS'))
+    type = Field(Enum('GROPE', 'KISS', 'FUCK', 'ORAL', 'ANAL', 'SM'))
 
     created = Field(DateTime, default=datetime.now)
     creator = ManyToOne('User')
