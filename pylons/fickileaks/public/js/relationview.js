@@ -46,6 +46,8 @@ $jit.RGraph.Plot.EdgeTypes.implement({
                 totalWidth += correctWidth(edge.data.relations[i].creators.length);
             }
 
+            var paintedWidth = 0;
+
             for (i in edge.data.relations) {
                 switch (edge.data.relations[i].type) {
                     case "GROPE":
@@ -80,8 +82,9 @@ $jit.RGraph.Plot.EdgeTypes.implement({
                 var cp2 = posFrom.scale(1/Math.pow(level2+1, 2)).add(posTo);
 
                 var width = correctWidth(edge.data.relations[i].creators.length);
-                var o = (i * width) - totalWidth/2;
-                c.lineWidth = width
+                var o = paintedWidth + width - totalWidth/2;
+                paintedWidth += width;
+                c.lineWidth = width;
 
                 c.beginPath();
                 c.moveTo(posFrom.x+o, posFrom.y)
