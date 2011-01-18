@@ -4,12 +4,13 @@ $jit.RGraph.Plot.NodeTypes.implement({
             var c = canvas.getCtx()
             var dim = node.getData('dim');
             var pos = node.getPos().toComplex();
-            var count = 0; node.eachAdjacency(function() { count++; });
 
-            this.nodeHelper.circle.render('fill', { x: pos.x, y: pos.y }, dim, canvas);
+            //this.nodeHelper.circle.render('fill', { x: pos.x, y: pos.y }, dim, canvas);
             this.nodeHelper.circle.render('stroke', { x: pos.x, y: pos.y }, dim, canvas);
 
             /*
+            var count = 0; node.eachAdjacency(function() { count++; });
+
             // more than 5 connections are hard to grep visually
             if (count >= 5) {
                 //c.fillStyle = '#888a85';
