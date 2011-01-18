@@ -158,7 +158,7 @@ var g = new $jit.RGraph({
     Navigation: {
         enable: true,
         panning: true,
-        zooming: 20
+        zooming: 200
     },
 
     Node: {
