@@ -122,17 +122,26 @@ $jit.RGraph.Plot.EdgeTypes.implement({
                 var level1 = edge.nodeTo.pos.rho/g.config.levelDistance
                 var level2 = edge.nodeFrom.pos.rho/g.config.levelDistance
 
-                var cp1 = posFrom.add(posTo.scale(1/Math.pow(level1+1, 2)));
-                var cp2 = posFrom.scale(1/Math.pow(level2+1, 2)).add(posTo);
-
                 var width = correctWidth(edge.data.relations[i].creators.length);
-                var o = paintedWidth + width - totalWidth/2;
                 paintedWidth += width;
                 c.lineWidth = width;
 
+                var p = paintedWidth + width - totalWidth/2;
+
+                var posFromNormal = new $jit.Complex(posFrom.x+posTo.y, posFrom.y-posTo.x);
+                posFromNormal = posFromNormal.scale(1/posFromNormal.norm());
+                posFromAdjusted = posFrom.add(posFromNormal.scale(p));
+
+                var posToNormal = new $jit.Complex(posTo.x+posFrom.y, posTo.y-posFrom.x);
+                posToNormal = posToNormal.scale(1/posToNormal.norm());
+                posToAdjusted = posTo.add(posToNormal.scale(-p));
+
+                var cp1 = posFromAdjusted.add(posToAdjusted.scale(1/Math.pow(level1+1, 2)));
+                var cp2 = posFromAdjusted.scale(1/Math.pow(level2+1, 2)).add(posToAdjusted);
+
                 c.beginPath();
-                c.moveTo(posFrom.x+o, posFrom.y)
-                c.bezierCurveTo(cp1.x+o, cp1.y, cp2.x+o, cp2.y, posTo.x+o, posTo.y);
+                c.moveTo(posFromAdjusted.x, posFromAdjusted.y)
+                c.bezierCurveTo(cp1.x, cp1.y, cp2.x, cp2.y, posToAdjusted.x, posToAdjusted.y);
                 c.stroke()
             }
         }
