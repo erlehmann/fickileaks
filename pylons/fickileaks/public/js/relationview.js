@@ -76,7 +76,7 @@ $jit.RGraph.Plot.NodeTypes.implement({
 });
 
 function correctWidth(width) {
-    return width*2;
+    return width;
 }
 
 $jit.RGraph.Plot.EdgeTypes.implement({
@@ -87,13 +87,16 @@ $jit.RGraph.Plot.EdgeTypes.implement({
             var posTo = edge.nodeTo.getPos().toComplex();
 
             var totalWidth = 0;
-            for (i in edge.data.relations) {
+            var i = edge.data.relations.length;
+            while (i--) {
                 totalWidth += correctWidth(edge.data.relations[i].creators.length);
             }
 
             var paintedWidth = 0;
 
-            for (i in edge.data.relations) {
+            // TODO: sort relations so colors are always right order
+            var i = edge.data.relations.length;
+            while (i--) {
                 switch (edge.data.relations[i].type) {
                     case "GROPE":
                         c.strokeStyle = '#ef2929'; // Scarlet Red
@@ -125,20 +128,19 @@ $jit.RGraph.Plot.EdgeTypes.implement({
 
                 var width = correctWidth(edge.data.relations[i].creators.length);
                 paintedWidth += width;
-                c.lineWidth = width;
+                c.lineWidth = width + 1; // FIXME: Why is this necessary?
 
-                var p = paintedWidth + width - totalWidth/2;
+                var p = paintedWidth - totalWidth/2;
 
-                var posFromNormal = new $jit.Complex(posFrom.x+posTo.y, posFrom.y-posTo.x);
-                posFromNormal = posFromNormal.scale(1/posFromNormal.norm());
-                posFromAdjusted = posFrom.add(posFromNormal.scale(p));
+                var line = new $jit.Complex(posTo.y-posFrom.y, -posTo.x+posFrom.x);
+                var lineNormal = line.scale(1/line.norm());
 
-                var posToNormal = new $jit.Complex(posTo.x+posFrom.y, posTo.y-posFrom.x);
-                posToNormal = posToNormal.scale(1/posToNormal.norm());
-                posToAdjusted = posTo.add(posToNormal.scale(-p));
+                var posFromAdjusted = posFrom.add(lineNormal.scale(p));
+                var posToAdjusted = posTo.add(lineNormal.scale(p));
 
-                var cp1 = posFromAdjusted.add(posToAdjusted.scale(1/Math.pow(level1+1, 2)));
-                var cp2 = posFromAdjusted.scale(1/Math.pow(level2+1, 2)).add(posToAdjusted);
+                // control points for individual rainbow strands
+                cp1 = posFromAdjusted.add(posToAdjusted.scale(1/Math.pow(level1+1, 2)));
+                cp2 = posFromAdjusted.scale(1/Math.pow(level2+1, 2)).add(posToAdjusted);
 
                 c.beginPath();
                 c.moveTo(posFromAdjusted.x, posFromAdjusted.y)
@@ -171,7 +173,8 @@ var g = new $jit.RGraph({
 
     Edge: {
         overridable: true,
-        type: 'rainbow-line'
+        type: 'rainbow-line',
+        lineWidth: 2
     },
 
     Label: {
