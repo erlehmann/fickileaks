@@ -30,6 +30,50 @@ $jit.RGraph.Plot.NodeTypes.implement({
     }
 });
 
+$jit.RGraph.Plot.NodeTypes.implement({
+    'cloud': {
+        'render': function(node, canvas) {
+            var c = canvas.getCtx();
+            c.lineWidth = node.getData('lineWidth') * 2;
+
+            var dim = node.getData('dim');
+            var pos = node.getPos().toComplex();
+
+            var lowerLeftPos = {x: pos.x - dim/1.5, y: pos.y};
+            var lowerRightPos = {x: pos.x + dim/1.5, y: pos.y};
+            var upperLeftPos = {x: pos.x - dim/3, y: pos.y - dim/3 };
+            var upperRightPos = {x: pos.x + dim/3, y: pos.y - dim/3 };
+
+            this.nodeHelper.square.render('stroke', pos, dim/1.5, canvas);
+            this.nodeHelper.circle.render('stroke', { x: lowerLeftPos.x, y: lowerLeftPos.y }, dim/1.5, canvas);
+            this.nodeHelper.circle.render('stroke', { x: lowerRightPos.x, y: lowerRightPos.y }, dim/1.5, canvas);
+            this.nodeHelper.circle.render('stroke', { x: upperLeftPos.x, y: upperLeftPos.y }, dim/1.25, canvas);
+            this.nodeHelper.circle.render('stroke', { x: upperRightPos.x, y: upperRightPos.y }, dim/1.5, canvas);
+
+            this.nodeHelper.square.render('fill', pos, dim/1.5, canvas);
+            this.nodeHelper.circle.render('fill', { x: lowerLeftPos.x, y: lowerLeftPos.y }, dim/1.5, canvas);
+            this.nodeHelper.circle.render('fill', { x: lowerRightPos.x, y: lowerRightPos.y }, dim/1.5, canvas);
+            this.nodeHelper.circle.render('fill', { x: upperLeftPos.x, y: upperLeftPos.y }, dim/1.25, canvas);
+            this.nodeHelper.circle.render('fill', { x: upperRightPos.x, y: upperRightPos.y }, dim/1.5, canvas);
+        },
+        'contains': function(node, pos) {
+            var dim = node.getData('dim');
+            var npos = node.getPos().toComplex();
+
+            var lowerLeftPos = {x: npos.x - dim/1.5, y: npos.y};
+            var lowerRightPos = {x: npos.x + dim/1.5, y: npos.y};
+            var upperLeftPos = {x: npos.x - dim/3, y: npos.y - dim/3 };
+            var upperRightPos = {x: npos.x + dim/3, y: npos.y - dim/3 };
+
+            return this.nodeHelper.square.contains(npos, pos, dim/1.5)
+                || this.nodeHelper.circle.contains(lowerLeftPos, pos, dim/1.5)
+                || this.nodeHelper.circle.contains(lowerRightPos, pos, dim/1.5)
+                || this.nodeHelper.circle.contains(upperLeftPos, pos, dim/1.25)
+                || this.nodeHelper.circle.contains(upperRightPos, pos, dim/1.5);
+        }
+    }
+});
+
 function correctWidth(width) {
     return width*2;
 }
@@ -107,12 +151,12 @@ var g = new $jit.RGraph({
 
     Node: {
         overridable: true,
-        type: 'stroke-circle',
+        type: 'cloud',
         CanvasStyles: {
             fillStyle: '#ffffff',
-            strokeStyle: '#2e3436',
-            lineWidth: 2
-        }
+            strokeStyle: '#2e3436'
+        },
+        lineWidth: 2
     },
 
     Edge: {
