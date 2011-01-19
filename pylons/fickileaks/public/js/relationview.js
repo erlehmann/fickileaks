@@ -1,37 +1,4 @@
 $jit.RGraph.Plot.NodeTypes.implement({
-    'stroke-circle': {
-        'render': function(node, canvas) {
-            var c = canvas.getCtx()
-            var dim = node.getData('dim');
-            var pos = node.getPos().toComplex();
-
-            //this.nodeHelper.circle.render('fill', { x: pos.x, y: pos.y }, dim, canvas);
-            this.nodeHelper.circle.render('stroke', { x: pos.x, y: pos.y }, dim, canvas);
-
-            /*
-            var count = 0; node.eachAdjacency(function() { count++; });
-
-            // more than 5 connections are hard to grep visually
-            if (count >= 5) {
-                //c.fillStyle = '#888a85';
-                c.fillStyle = '#babdb6';
-                c.font = + 2*dim - 16 + 'px sans-serif';
-                c.textAlign = 'center';
-                c.textBaseline = 'middle';
-                // pos.y hack to have beautiful vertically centered digits
-                c.fillText(count, pos.x, pos.y + dim/8)
-            }
-            */
-        },
-        'contains': function(node, pos) {
-            var dim = node.getData('dim');
-            var npos = node.getPos().toComplex();
-            return this.nodeHelper.circle.contains(npos, pos, dim);
-        }
-    }
-});
-
-$jit.RGraph.Plot.NodeTypes.implement({
     'cloud': {
         'render': function(node, canvas) {
             var c = canvas.getCtx();
