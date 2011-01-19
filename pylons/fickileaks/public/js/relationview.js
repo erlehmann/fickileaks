@@ -142,6 +142,17 @@ $jit.RGraph.Plot.EdgeTypes.implement({
                 cp1 = posFromAdjusted.add(posToAdjusted.scale(1/Math.pow(level1+1, 2)));
                 cp2 = posFromAdjusted.scale(1/Math.pow(level2+1, 2)).add(posToAdjusted);
 
+                // crude control point fix, get rid of those near to end points
+                var dimFrom = edge.nodeTo.getData('dim');
+                if (this.nodeHelper.circle.contains(posFromAdjusted, cp1, dimFrom)) {
+                    cp1 = posFromAdjusted;
+                }
+
+                var dimTo = edge.nodeTo.getData('dim');
+                if (this.nodeHelper.circle.contains(posToAdjusted, cp2, dimTo)) {
+                    cp2 = posToAdjusted;
+                }
+
                 c.beginPath();
                 c.moveTo(posFromAdjusted.x, posFromAdjusted.y)
                 c.bezierCurveTo(cp1.x, cp1.y, cp2.x, cp2.y, posToAdjusted.x, posToAdjusted.y);
