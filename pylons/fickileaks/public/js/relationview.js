@@ -1,28 +1,27 @@
+function cloudRender(object, mode, pos, dim, canvas) {
+    var lowerLeftPos = {x: pos.x - dim/1.5, y: pos.y};
+    var lowerRightPos = {x: pos.x + dim/1.5, y: pos.y};
+    var upperLeftPos = {x: pos.x - dim/3, y: pos.y - dim/3 };
+    var upperRightPos = {x: pos.x + dim/3, y: pos.y - dim/3 };
+
+    object.nodeHelper.square.render(mode, pos, dim/1.5, canvas);
+    object.nodeHelper.circle.render(mode, { x: lowerLeftPos.x, y: lowerLeftPos.y }, dim/1.5, canvas);
+    object.nodeHelper.circle.render(mode, { x: lowerRightPos.x, y: lowerRightPos.y }, dim/1.5, canvas);
+    object.nodeHelper.circle.render(mode, { x: upperLeftPos.x, y: upperLeftPos.y }, dim/1.25, canvas);
+    object.nodeHelper.circle.render(mode, { x: upperRightPos.x, y: upperRightPos.y }, dim/1.5, canvas);
+}
+
 $jit.RGraph.Plot.NodeTypes.implement({
     'cloud': {
         'render': function(node, canvas) {
             var c = canvas.getCtx();
-            c.lineWidth = node.getData('lineWidth') * 2;
-
             var dim = node.getData('dim');
             var pos = node.getPos().toComplex();
 
-            var lowerLeftPos = {x: pos.x - dim/1.5, y: pos.y};
-            var lowerRightPos = {x: pos.x + dim/1.5, y: pos.y};
-            var upperLeftPos = {x: pos.x - dim/3, y: pos.y - dim/3 };
-            var upperRightPos = {x: pos.x + dim/3, y: pos.y - dim/3 };
+            c.lineWidth = node.getData('lineWidth') * 2;
+            cloudRender(this, 'stroke', pos, dim, canvas);
 
-            this.nodeHelper.square.render('stroke', pos, dim/1.5, canvas);
-            this.nodeHelper.circle.render('stroke', { x: lowerLeftPos.x, y: lowerLeftPos.y }, dim/1.5, canvas);
-            this.nodeHelper.circle.render('stroke', { x: lowerRightPos.x, y: lowerRightPos.y }, dim/1.5, canvas);
-            this.nodeHelper.circle.render('stroke', { x: upperLeftPos.x, y: upperLeftPos.y }, dim/1.25, canvas);
-            this.nodeHelper.circle.render('stroke', { x: upperRightPos.x, y: upperRightPos.y }, dim/1.5, canvas);
-
-            this.nodeHelper.square.render('fill', pos, dim/1.5, canvas);
-            this.nodeHelper.circle.render('fill', { x: lowerLeftPos.x, y: lowerLeftPos.y }, dim/1.5, canvas);
-            this.nodeHelper.circle.render('fill', { x: lowerRightPos.x, y: lowerRightPos.y }, dim/1.5, canvas);
-            this.nodeHelper.circle.render('fill', { x: upperLeftPos.x, y: upperLeftPos.y }, dim/1.25, canvas);
-            this.nodeHelper.circle.render('fill', { x: upperRightPos.x, y: upperRightPos.y }, dim/1.5, canvas);
+            cloudRender(this, 'fill', pos, dim, canvas);
         },
         'contains': function(node, pos) {
             var dim = node.getData('dim');
