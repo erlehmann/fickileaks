@@ -196,6 +196,12 @@ class RelationviewController(BaseController):
             offset = int(random()*1000)
             return datetime.fromordinal(offset + 733000).isoformat()
 
+        def creators(list):
+            result = {}
+            for creator in list:
+                result[creator] = sometime()
+            return result
+
         nodes = [
             {
                 'id': 'alice',
@@ -211,85 +217,58 @@ class RelationviewController(BaseController):
                             'relations': [
                                 {
                                     'type': 'GROPE',
-                                    'creators': [
-                                        {
-                                            'creator': 'alice@example.org',
-                                            'timestamp': sometime()
-                                        },
-                                        {
-                                            'creator': 'bob@example.org',
-                                            'timestamp': sometime()
-                                        },
-                                        {
-                                            'creator': 'charlie@example.org',
-                                            'timestamp': sometime()
-                                        }
-                                    ]
+                                    'creators': creators(
+                                        [
+                                            'alice@example.org',
+                                            'bob@example.org',
+                                            'charlie@example.org'
+                                        ]
+                                    )
                                 },
                                 {
                                     'type': 'KISS',
-                                    'creators': [
-                                        {
-                                            'creator': 'alice@example.org',
-                                            'timestamp': sometime()
-                                        },
-                                        {
-                                            'creator': 'bob@example.org',
-                                            'timestamp': sometime()
-                                        },
-                                        {
-                                            'creator': 'charlie@example.org',
-                                            'timestamp': sometime()
-                                        }
-                                    ]
+                                    'creators': creators(
+                                        [
+                                            'alice@example.org',
+                                            'bob@example.org',
+                                            'charlie@example.org'
+                                        ]
+                                    )
                                 },
                                 {
                                     'type': 'FUCK',
-                                    'creators': [
-                                        {
-                                            'creator': 'alice@example.org',
-                                            'timestamp': sometime()
-                                        },
-                                        {
-                                            'creator': 'bob@example.org',
-                                            'timestamp': sometime()
-                                        }
-                                    ]
+                                    'creators': creators(
+                                        [
+                                            'alice@example.org',
+                                            'bob@example.org'
+                                        ]
+                                    )
                                 },
                                 {
                                     'type': 'ORAL',
-                                    'creators': [
-                                        {
-                                            'creator': 'alice@example.org',
-                                            'timestamp': sometime()
-                                        },
-                                        {
-                                            'creator': 'bob@example.org',
-                                            'timestamp': sometime()
-                                        }
-                                    ]
+                                    'creators': creators(
+                                        [
+                                            'alice@example.org',
+                                            'bob@example.org'
+                                        ]
+                                    )
                                 },
                                 {
                                     'type': 'ANAL',
-                                    'creators': [
-                                        {
-                                            'creator': 'alice@example.org',
-                                            'timestamp': sometime()
-                                        },
-                                        {
-                                            'creator': 'bob@example.org',
-                                            'timestamp': sometime()
-                                        }
-                                    ]
+                                    'creators': creators(
+                                        [
+                                            'alice@example.org',
+                                            'bob@example.org'
+                                        ]
+                                    )
                                 },
                                 {
                                     'type': 'SM',
-                                    'creators': [
-                                        {
-                                            'creator': 'alice@example.org',
-                                            'timestamp': sometime()
-                                        }
-                                    ]
+                                    'creators': creators(
+                                        [
+                                            'alice@example.org'
+                                        ]
+                                    )
                                 }
                             ]
                         }
@@ -310,33 +289,22 @@ class RelationviewController(BaseController):
                             'relations': [
                                 {
                                     'type': 'GROPE',
-                                    'creators': [
-                                        {
-                                            'creator': 'alice@example.org',
-                                            'timestamp': sometime()
-                                        },
-                                        {
-                                            'creator': 'bob@example.org',
-                                            'timestamp': sometime()
-                                        },
-                                        {
-                                            'creator': 'charlie@example.org',
-                                            'timestamp': sometime()
-                                        }
-                                    ]
+                                    'creators': creators(
+                                        [
+                                            'alice@example.org',
+                                            'bob@example.org',
+                                            'charlie@example.org'
+                                        ]
+                                    )
                                 },
                                 {
                                     'type': 'KISS',
-                                    'creators': [
-                                        {
-                                            'creator': 'bob@example.org',
-                                            'timestamp': sometime()
-                                        },
-                                        {
-                                            'creator': 'charlie@example.org',
-                                            'timestamp': sometime()
-                                        }
-                                    ]
+                                    'creators': creators(
+                                        [
+                                            'bob@example.org',
+                                            'charlie@example.org'
+                                        ]
+                                    )
                                 }
                             ]
                         }
@@ -357,12 +325,11 @@ class RelationviewController(BaseController):
                             'relations': [
                                 {
                                     'type': 'KISS',
-                                    'creators': [
-                                        {
-                                            'creator': 'charlie@example.org',
-                                            'timestamp': sometime()
-                                        }
-                                    ]
+                                    'creators': creators(
+                                        [
+                                            'charlie@example.org'
+                                        ]
+                                    )
                                 }
                             ]
                         }
@@ -372,12 +339,11 @@ class RelationviewController(BaseController):
                             'relations': [
                                 {
                                     'type': 'KISS',
-                                    'creators': [
-                                        {
-                                            'creator': 'alice@example.org',
-                                            'timestamp': sometime()
-                                        }
-                                    ]
+                                    'creators': creators(
+                                        [
+                                            'alice@example.org'
+                                        ]
+                                    )
                                 }
                             ]
                         }
@@ -387,36 +353,32 @@ class RelationviewController(BaseController):
                             'relations': [
                                 {
                                     'type': 'GROPE',
-                                    'creators': [
-                                        {
-                                            'creator': 'alice@example.org',
-                                            'timestamp': sometime()
-                                        }
-                                    ]
+                                    'creators': creators(
+                                        [
+                                            'alice@example.org'
+                                        ]
+                                    )
                                 }, {
                                     'type': 'KISS',
-                                    'creators': [
-                                        {
-                                            'creator': 'alice@example.org',
-                                            'timestamp': sometime()
-                                        }
-                                    ]
+                                    'creators': creators(
+                                        [
+                                            'alice@example.org'
+                                        ]
+                                    )
                                 }, {
                                     'type': 'FUCK',
-                                    'creators': [
-                                        {
-                                            'creator': 'alice@example.org',
-                                            'timestamp': sometime()
-                                        }
-                                    ]
+                                    'creators': creators(
+                                        [
+                                            'alice@example.org'
+                                        ]
+                                    )
                                 }, {
                                     'type': 'ORAL',
-                                    'creators': [
-                                        {
-                                            'creator': 'alice@example.org',
-                                            'timestamp': sometime()
-                                        }
-                                    ]
+                                    'creators': creators(
+                                        [
+                                            'alice@example.org'
+                                        ]
+                                    )
                                 }
                             ]
                         }

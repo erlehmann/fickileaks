@@ -55,7 +55,8 @@ $jit.RGraph.Plot.EdgeTypes.implement({
             var totalWidth = 0;
             var i = edge.data.relations.length;
             while (i--) {
-                totalWidth += correctWidth(edge.data.relations[i].creators.length);
+                var count = 0; for (j in edge.data.relations[i].creators) { count++; }
+                totalWidth += correctWidth(count);
             }
 
             var paintedWidth = 0;
@@ -89,7 +90,7 @@ $jit.RGraph.Plot.EdgeTypes.implement({
                         break;
                 }
 
-                var width = correctWidth(edge.data.relations[i].creators.length);
+                var width = correctWidth(count);
                 paintedWidth += width;
                 c.lineWidth = width + 1; // FIXME: Why is this necessary?
 
