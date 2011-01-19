@@ -123,9 +123,6 @@ $jit.RGraph.Plot.EdgeTypes.implement({
                         break;
                 }
 
-                var level1 = edge.nodeTo.pos.rho/g.config.levelDistance
-                var level2 = edge.nodeFrom.pos.rho/g.config.levelDistance
-
                 var width = correctWidth(edge.data.relations[i].creators.length);
                 paintedWidth += width;
                 c.lineWidth = width + 1; // FIXME: Why is this necessary?
@@ -137,6 +134,9 @@ $jit.RGraph.Plot.EdgeTypes.implement({
 
                 var posFromAdjusted = posFrom.add(lineNormal.scale(p));
                 var posToAdjusted = posTo.add(lineNormal.scale(p));
+
+                var level1 = edge.nodeTo.pos.rho/g.config.levelDistance;
+                var level2 = edge.nodeFrom.pos.rho/g.config.levelDistance;
 
                 // control points for individual rainbow strands
                 cp1 = posFromAdjusted.add(posToAdjusted.scale(1/Math.pow(level1+1, 2)));
