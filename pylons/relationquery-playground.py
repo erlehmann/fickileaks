@@ -52,7 +52,7 @@ print "=== FOLDED ==="
 for node in nodeset:
     print node
 
-# fix-fold relationships
+# fix-fold relations
 for node1 in nodeset:
     for node2 in nodeset:
         for relation2 in node2.relations:
