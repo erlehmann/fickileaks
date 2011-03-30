@@ -45,147 +45,122 @@ class RelationviewController(BaseController):
     @jsonify
     def infovis(self):
         query = Relation.query.all()
+        nodeset = set([])
+        
+        # see if two different nodes share URLs
+        def equivalent(node1, node2):
+            if (node1 != node2):
+                for url1 in node1.urls:
+                    for url2 in node2.urls:
+                        if (url1 == url2):
+                            return True
+            return False
+        
+        def merge(node1, node2):
+            for name2 in node2.names:
+                node1.addName(name2.name)
+        
+            for url2 in node2.urls:
+                node1.addUrl(url2.url)
+        
+            for relation2 in node2.relations:
+                pos2 = relation2.participants.index(node2)
+                relation2.participants[pos2] = node1
+            node1.relations.extend(node2.relations)
+        
+        # get nodes
+        for relation in query:
+            nodeset.update(relation.participants)
+        
+        for node in nodeset:
+            print node
+        
+        # fold nodes
+        while True:
+            try:
+                for node1 in nodeset:
+                    for node2 in nodeset:
+                        if equivalent(node1, node2):
+                            merge(node1, node2)
+                            nodeset.remove(node2)
+                break
+            except RuntimeError:  #Set changed size during iteration
+                pass
+        
+        for node in nodeset:
+            print node
+        
+        # fix-fold relations
+        for node1 in nodeset:
+            for node2 in nodeset:
+                for relation1 in node1.relations:
+                    for participant in relation1.participants:
+                        if equivalent(participant, node2):
+                            pos = relation1.participants.index(participant)
+                            relation1.participants[pos] = node2
+                try:
+                    for relation2 in node2.relations:
+                        for participant in relation2.participants:
+                            if equivalent(participant, node1):
+                                pos = relation2.participants.index(participant)
+                                relation2.participants[pos] = node1
+                except IntegrityError:
+                    pass  # FIXME: I have no idea why this is happening sometimes
+        
+        # serialize structure so it can be jsonified
+        nodelist = []
+        
+        for node in nodeset:
+            serialnode = {
+                'id': node.urls[0].url,
+                'name': node.names[0].name,
+                'data': {
+                    # set hack used so both Names and URLs occur only once
+                    'names': list(set([n.name for n in node.names])),
+                    'urls': list(set([u.url for u in node.urls]))
+                },
+                'adjacencies': []
+            }
+        
+            for relation in node.relations:
+                for participant in relation.participants:
+                    if not (node.urls[0] == participant.urls[0]):
+        
+                        adjacencynodeexists = False
+                        for adjacency in serialnode['adjacencies']:
+                            if (adjacency['nodeTo'] == participant.urls[0].url):
+                                adjacencynodeexists = True
+                                adjacencynode = adjacency
 
-        nodes = []
+                            relationnodeexists = False
+                            for relation0 in adjacency['data']['relations']:
+                                if (relation0['type'] == relation.type):
+                                    relationnodeexists = True
+                                    relationnode = relation0
 
-        # create nodes
-        for r in query:
-            for p in r.participants:
-                names = [n.name for n in p.names]
-                urls = [u.url for u in p.urls]
+                            if not relationnodeexists:
+                                relationnode = {
+                                    'type': relation.type,
+                                    'creators': [relation.creator.email],
+                                }
+                            
+                                adjacencynode['data']['relations'].append(relationnode)
+                            else:
+                                if not (relation.creator.email in relationnode['creators']):
+                                    relationnode['creators'].append(relation.creator.email)
 
-                # other participants in that relation
-                others = []
-                for q in r.participants:
-                    if (p != q):
-                        others.append(q)
-
-                # urls of those participants
-                relations = {}
-                relations[r.type] = []
-                for o in others:
-                    for u in o.urls:
-                        relations[r.type].append(
-                            {
-                                'url': u.url,
-                                'creator': r.creator.email
+                        if not adjacencynodeexists:
+                            adjacencynode = {
+                                'nodeTo': participant.urls[0].url,
+                                'data': {
+                                    'relations': []
+                                }
                             }
-                        )
+                            serialnode['adjacencies'].append(adjacencynode)
 
-                node = {
-                    'data': {
-                        'names': names,
-                        'urls': urls,
-                        'relations': relations
-                    }
-                }
+            nodelist.append(serialnode)
 
-                nodes.append(node)
-
-        result = []
-
-        # fold nodes to merge all nodes who share URLs
-        # the outer loop is necessary since merges on one pass can enable
-        # further merges on subsequent passes.
-        for i in range(len(nodes)-1):
-            for node in nodes:
-                addNode = True  # assume node will be added
-
-                for resultNode in result:
-                    urls = set(node['data']['urls'])
-                    resultUrls = set(resultNode['data']['urls'])
-
-                    # merge nodes if two of them share the same URL
-                    if (urls.intersection(resultUrls)):
-                        resultNode['data']['urls'] = list(urls.union(resultUrls))
-
-                        names = set(node['data']['names'])
-                        resultNames = set(resultNode['data']['names'])
-                        resultNode['data']['names'] = list(names.union(resultNames))
-
-                        for type in node['data']['relations']:
-                            relations = node['data']['relations'][type]
-
-                            try:
-                                resultRelations = resultNode['data']['relations'][type]
-                            except KeyError:
-                                # resultNode has no relations of that type yet
-                                resultNode['data']['relations'][type] = relations
-                                break
-
-                            if (relations and resultRelations):  # both not None
-                                resultNode['data']['relations'][type].extend(relations)
-
-                        # do not add current node to result
-                        addNode = False
-
-                if (addNode):
-                    result.append(node)
-
-            nodes = result
-            result = []
-
-        # create names and ids
-        for node in nodes:
-            node['name'] = node['data']['names'][0]
-            node['id'] = node['data']['urls'][0]
-
-        def getNodeByUrl(nodes, url):
-            for node in nodes:
-                if url in node['data']['urls']:
-                    return node
-
-        # create edges
-        for node in nodes:
-            node['adjacencies'] = []
-
-            for type in node['data']['relations']:
-                for relation in node['data']['relations'][type]:
-                    targetNode = getNodeByUrl(nodes, relation['url'])
-
-                    adjacency = {
-                        'nodeTo': targetNode['id'],
-                        'data': {
-                            'type': type,
-                            'creators': [relation['creator']]
-                        }
-                    }
-
-                    node['adjacencies'].append(adjacency)
-
-        # fold edges to merge all edges with same nodes and type
-        for node in nodes:
-            result = []
-
-            for adjacency in node['adjacencies']:
-                addAdjacency = True
-
-                for resultAdjacency in result:
-                    nodeTo = adjacency['nodeTo']
-                    resultNodeTo = resultAdjacency['nodeTo']
-
-                    type = adjacency['data']['type']
-                    resultType = resultAdjacency['data']['type']
-
-                    # merge edges if type and target node id are the same
-                    if ((nodeTo == resultNodeTo) and \
-                        (type == resultType)):
-                        resultAdjacency['data']['creators'].extend(adjacency['data']['creators'])
-
-                        addAdjacency = False
-
-                if (addAdjacency):
-                    result.append(adjacency)
-
-            node['adjacencies'] = result
-            result = []
-
-
-        # get rid of temporary edge data
-        for node in nodes:
-            del node['data']['relations']
-
-        return nodes
+        return nodelist
 
 
     @jsonify
