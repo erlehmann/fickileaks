@@ -13,7 +13,7 @@ from datetime import datetime
 
 log = logging.getLogger(__name__)
 
-class RelationviewController(BaseController):
+class RelationsController(BaseController):
 
     def index(self):
         return render('relationview.mako')
