@@ -49,7 +49,7 @@ class RelationviewController(BaseController):
     @jsonify
     def infovis(self):
         query = Relation.query.all()
-        
+
         nodeset = set([])
         nodecache = {}
         
@@ -93,15 +93,16 @@ class RelationviewController(BaseController):
         for relation in query:
             nodeset.update(relation.participants)
 
-        foldednodeset = set([])
-        for node in nodeset:
-            addToFoldedSet = True
-            for foldednode in foldednodeset:
-                if equivalent(node, foldednode):
-                    merge(foldednode, node)
-                    addToFoldedSet = False
-            if addToFoldedSet:
-                foldednodeset.add(node)
+            # FIXME: this should work on one less level of intendation
+            foldednodeset = set([])
+            for node in nodeset:
+                addToFoldedSet = True
+                for foldednode in foldednodeset:
+                    if equivalent(node, foldednode):
+                        merge(foldednode, node)
+                        addToFoldedSet = False
+                if addToFoldedSet:
+                    foldednodeset.add(node)
 
         nodeset = foldednodeset
 
