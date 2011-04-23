@@ -88,14 +88,11 @@ class RelationviewController(BaseController):
                             # replace legacy node with upgraded node
                             relation.removeParticipant(participant)
                             relation.addParticipant(nodecache[participant])
-        
+
         # get nodes
         for relation in query:
             nodeset.update(relation.participants)
-        
-        for node in nodeset:
-            print node
-        
+
         foldednodeset = set([])
         for node in nodeset:
             addToFoldedSet = True
@@ -105,35 +102,22 @@ class RelationviewController(BaseController):
                     addToFoldedSet = False
             if addToFoldedSet:
                 foldednodeset.add(node)
-        
+
         nodeset = foldednodeset
-        
-        print "=== FOLDED ==="
-        
-        for node in nodeset:
-            print node
-        
+
         fixrelations(nodeset)
-        
-        print "=== RELATIONS FIXED ==="
-        
-        for node in nodeset:
-            print node
-        
-        print md5(str(nodeset)).hexdigest()
 
         # serialize structure so it can be jsonified
         nodelist = []
         
         for node in nodeset:
-            print node._getSortedNames()
             serialnode = {
                 'id': node._getSortedUrls()[0].url,
                 'name': node._getSortedNames()[0].name,
                 'data': {
                     # set hack used so both Names and URLs occur only once
-                    'names': list(set([n.name for n in node.names])),
-                    'urls': list(set([u.url for u in node.urls]))
+                    'names': [n.name for n in node._getSortedNames()],
+                    'urls': [u.url for u in node._getSortedUrls()]
                 },
                 'adjacencies': []
             }
