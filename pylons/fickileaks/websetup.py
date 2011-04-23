@@ -43,8 +43,8 @@ def setup_app(command, conf, vars):
     bp2 = Person(bob, ["Dave the Face"], ["http://example.com/davedavedave"])
 
     # User bob claims to be aware of the existence of these relationships
-    br0 = Relation(bob, 'FUCK', [bp0, bp1])
-    br1 = Relation(bob, 'FUCK', [bp0, bp2])
+    br0 = Relation(bob, 'ANAL', [bp0, bp1])
+    br1 = Relation(bob, 'ANAL', [bp0, bp2])
     br2 = Relation(bob, 'KISS', [bp1, bp2])
 
     # User charlie claims to be aware of the existence of these persons
@@ -57,6 +57,6 @@ def setup_app(command, conf, vars):
     cr0 = Relation(charlie, 'KISS', [cp0, cp1])
     cr1 = Relation(charlie, 'KISS', [cp0, cp2])
     cr2 = Relation(charlie, 'KISS', [cp1, cp3])
-    cr3 = Relation(charlie, 'FUCK', [cp2, cp3])
+    cr3 = Relation(charlie, 'SM', [cp2, cp3])
 
     Session.commit()
