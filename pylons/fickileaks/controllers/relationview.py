@@ -123,7 +123,6 @@ class RelationviewController(BaseController):
             }
 
             for relation in node.relations:
-                #print node, relation
                 for participant in relation.participants:
                     if not (node._getSortedUrls()[0] == participant._getSortedUrls()[0]):
         
@@ -154,7 +153,12 @@ class RelationviewController(BaseController):
                             adjacencynode = {
                                 'nodeTo': participant._getSortedUrls()[0].url,
                                 'data': {
-                                    'relations': []
+                                    'relations': [
+                                        {
+                                            'type': relation.type,
+                                            'creators': [relation.creator.email],
+                                        }
+                                    ]
                                 }
                             }
                             serialnode['adjacencies'].append(adjacencynode)
