@@ -42,13 +42,20 @@ class Person(Entity):
         self.creator = creator
 
         for namestring in namestrings:
-            self.addName(namestring)
+            self.addName(namestring, creator)
 
         for urlstring in urlstrings:
-            self.addUrl(urlstring)
+            self.addUrl(urlstring, creator)
 
     def __repr__(self):
         return '<Person \n\t Names: %s, \n\t URLs: %s, \n\t Relations: %s>' % (self.names, self.urls, self.relations)
+
+    def _getCountedNames(self):
+        countednames = {}
+        namelist = [n.name for n in self.names]
+        for name in namelist:
+            countednames[name] = namelist.count(name)
+        print countednames
 
     def _getSortedNames(self):
         sortednames = self.names
@@ -58,35 +65,37 @@ class Person(Entity):
     def _getSortedUrls(self):
         sortedurls = self.urls
         sortedurls.sort()
-        return sortedurls
+        return sortedurls        
 
-    def addName(self, namestring):
-        try:
-            # if Name object with corresponding namestring is available, use it
-            name = Name.query.filter_by(name=namestring).one()
-        except NoResultFound:
-            name = Name(namestring)
+    def addName(self, namestring, creator):
+        #try:
+            # if Name object with corresponding creator and namestring is available, use it
+        #    name = Name.query.filter_by(name=namestring).one()
+        #except NoResultFound:
+        name = Name(namestring, creator)
 
         self.names.append(name)
 
-    def addUrl(self, urlstring):
-        try:
+    def addUrl(self, urlstring, creator):
+        #try:
             # if Url object with corresponding urlstring is available, use it
-            url = Url.query.filter_by(url=urlstring).one()
-        except NoResultFound:
-            url = Url(urlstring)
+        #    url = Url.query.filter_by(url=urlstring).one()
+        #except NoResultFound:
+        url = Url(urlstring, creator)
 
         self.urls.append(url)
 
 
 class Name(Entity):
-    name = Field(Unicode(), primary_key=True)
+    name = Field(Unicode())
     person = ManyToMany('Person')
 
     created = Field(DateTime, default=datetime.now)
+    creator = ManyToOne('User')
 
-    def __init__(self, name):
+    def __init__(self, name, creator):
         self.name = name
+        self.creator = creator
 
     def __repr__(self):
         return '<Name %s>' % (self.name)
@@ -102,13 +111,15 @@ class Name(Entity):
 
 
 class Url(Entity):
-    url = Field(Unicode(), primary_key=True)  # FIXME: URL data type
+    url = Field(Unicode())  # FIXME: URL data type
     person = ManyToMany('Person')
 
     created = Field(DateTime, default=datetime.now)
+    creator = ManyToOne('User')
 
-    def __init__(self, url):
+    def __init__(self, url, creator):
         self.url = url
+        self.creator = creator
 
     def __repr__(self):
         return '<Url %s>' % (self.url)

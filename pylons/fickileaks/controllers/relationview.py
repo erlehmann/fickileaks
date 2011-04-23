@@ -10,9 +10,6 @@ from fickileaks.model import Relation, Person
 from sqlalchemy.exc import IntegrityError
 
 from datetime import datetime
-from random import random
-
-from hashlib import md5
 
 log = logging.getLogger(__name__)
 
@@ -43,7 +40,6 @@ class RelationviewController(BaseController):
 
             result['relations'].append(relation)
 
-        #print result
         return result
 
     @jsonify
@@ -52,7 +48,7 @@ class RelationviewController(BaseController):
 
         nodeset = set([])
         nodecache = {}
-        
+
         # see if two different nodes share URLs
         def equivalent(node1, node2):
             if (node1 != node2):
@@ -61,24 +57,24 @@ class RelationviewController(BaseController):
                         if (url1 == url2):
                             return True
             return False
-        
+
         def merge(node1, node2):
             for name2 in node2.names:
-                node1.addName(name2.name)
+                node1.addName(name2.name, name2.creator)
         
             for url2 in node2.urls:
-                node1.addUrl(url2.url)
+                node1.addUrl(url2.url, url2.creator)
         
             for relation2 in node2.relations:
                 # node 1 is the person that should replace node 2 in the final result
                 relation2.removeParticipant(node2)
                 # FIXME: do not use persistence level, but create display objects
                 node1.relations.append(relation2)
-                # IMPORTANT: node1 gets automatically to relation2 due to elixir
+                # IMPORTANT: node1 gets automatically added to relation2 due to elixir
         
                 # remember that node2 has been replaced with node1
                 nodecache[node2] = node1
-        
+
         def fixrelations(nodeset):
             for node in nodeset:
                 for relation in node.relations:
@@ -116,12 +112,30 @@ class RelationviewController(BaseController):
                 'id': node._getSortedUrls()[0].url,
                 'name': node._getSortedNames()[0].name,
                 'data': {
-                    # set hack used so both Names and URLs occur only once
-                    'names': [n.name for n in node._getSortedNames()],
-                    'urls': [u.url for u in node._getSortedUrls()]
+                    'names': {},
+                    'urls': {}
                 },
                 'adjacencies': []
             }
+
+            # Who calls this node by what name?
+            for n in node.names:
+                if not n.name in serialnode['data']['names'].keys():
+                    serialnode['data']['names'][n.name] = [n.creator.email]
+                else:
+                    serialnode['data']['names'][n.name].append(n.creator.email)
+                # remove doubles
+                serialnode['data']['names'][n.name] = list(set(serialnode['data']['names'][n.name]))
+
+            # Who calls this node by what URL?
+            for u in node.urls:
+                if not u.url in serialnode['data']['urls'].keys():
+                    serialnode['data']['urls'][u.url] = [u.creator.email]
+                else:
+                    serialnode['data']['urls'][u.url].append(u.creator.email)
+                # remove doubles
+                serialnode['data']['urls'][u.url] = list(set(serialnode['data']['urls'][u.url]))
+            
 
             for relation in node.relations:
                 for participant in relation.participants:
@@ -168,243 +182,18 @@ class RelationviewController(BaseController):
 
         return nodelist
 
+class PersonContainer:
+    "Data container for presentation purposes, filled by Person entity."
 
-    @jsonify
-    def infovis_dummy(self):
-        """ dummy data for infovis, remove when infovis controller is mature """
+    def __init__(self, names, urls, relations):
+        self.names = {}
+        self.urls = {}
+        self.relations = []
 
-        def sometime():
-            offset = int(random()*1000)
-            return datetime.fromordinal(offset + 733000).isoformat()
+class RelationContainer:
+    "Data container for presentation purposes, filled by Relation entity."
 
-        def creators(list):
-            result = {}
-            for creator in list:
-                result[creator] = sometime()
-            return result
-
-        nodes = [
-            {
-                'id': 'alice',
-                'name': 'Alice Alisson',
-                'data': {
-                    'names': [],
-                    'urls': []
-                },
-                'adjacencies': [
-                    {
-                        'nodeTo': 'bob',
-                        'data': {
-                            'relations': [
-                                {
-                                    'type': 'GROPE',
-                                    'creators': creators(
-                                        [
-                                            'alice@example.org',
-                                            'bob@example.org',
-                                            'charlie@example.org'
-                                        ]
-                                    )
-                                },
-                                {
-                                    'type': 'KISS',
-                                    'creators': creators(
-                                        [
-                                            'alice@example.org',
-                                            'bob@example.org',
-                                            'charlie@example.org'
-                                        ]
-                                    )
-                                },
-                                {
-                                    'type': 'FUCK',
-                                    'creators': creators(
-                                        [
-                                            'alice@example.org',
-                                            'bob@example.org'
-                                        ]
-                                    )
-                                },
-                                {
-                                    'type': 'ORAL',
-                                    'creators': creators(
-                                        [
-                                            'alice@example.org',
-                                            'bob@example.org'
-                                        ]
-                                    )
-                                },
-                                {
-                                    'type': 'ANAL',
-                                    'creators': creators(
-                                        [
-                                            'alice@example.org',
-                                            'bob@example.org'
-                                        ]
-                                    )
-                                },
-                                {
-                                    'type': 'SM',
-                                    'creators': creators(
-                                        [
-                                            'alice@example.org'
-                                        ]
-                                    )
-                                }
-                            ]
-                        }
-                    }
-                ]
-            },
-            {
-                'id': 'bob',
-                'name': 'Bob Bobsen',
-                'data': {
-                    'names': [],
-                    'urls': []
-                },
-                'adjacencies': [
-                    {
-                        'nodeTo': 'charlie',
-                        'data': {
-                            'relations': [
-                                {
-                                    'type': 'GROPE',
-                                    'creators': creators(
-                                        [
-                                            'alice@example.org',
-                                            'bob@example.org',
-                                            'charlie@example.org'
-                                        ]
-                                    )
-                                },
-                                {
-                                    'type': 'KISS',
-                                    'creators': creators(
-                                        [
-                                            'bob@example.org',
-                                            'charlie@example.org'
-                                        ]
-                                    )
-                                }
-                            ]
-                        }
-                    }
-                ]
-            },
-            {
-                'id': 'charlie',
-                'name': 'Charlie Charlesson',
-                'data': {
-                    'names': [],
-                    'urls': []
-                },
-                'adjacencies': [
-                    {
-                        'nodeTo': 'alice',
-                        'data': {
-                            'relations': [
-                                {
-                                    'type': 'KISS',
-                                    'creators': creators(
-                                        [
-                                            'charlie@example.org'
-                                        ]
-                                    )
-                                }
-                            ]
-                        }
-                    }, {
-                        'nodeTo': 'eve',
-                        'data': {
-                            'relations': [
-                                {
-                                    'type': 'KISS',
-                                    'creators': creators(
-                                        [
-                                            'alice@example.org'
-                                        ]
-                                    )
-                                }
-                            ]
-                        }
-                    }, {
-                        'nodeTo': 'zoe',
-                        'data': {
-                            'relations': [
-                                {
-                                    'type': 'GROPE',
-                                    'creators': creators(
-                                        [
-                                            'alice@example.org'
-                                        ]
-                                    )
-                                }, {
-                                    'type': 'KISS',
-                                    'creators': creators(
-                                        [
-                                            'alice@example.org'
-                                        ]
-                                    )
-                                }, {
-                                    'type': 'FUCK',
-                                    'creators': creators(
-                                        [
-                                            'alice@example.org'
-                                        ]
-                                    )
-                                }, {
-                                    'type': 'ORAL',
-                                    'creators': creators(
-                                        [
-                                            'alice@example.org'
-                                        ]
-                                    )
-                                }
-                            ]
-                        }
-                    }
-                ]
-            }, {
-                'id': 'dave',
-                'name': 'Dave Davidsson',
-                'data': {
-                    'names': [],
-                    'urls': []
-                },
-                'adjacencies': [
-                    {
-                        'nodeTo': 'alice',
-                        'data': {
-                            'relations': [
-                                {
-                                    'type': 'KISS',
-                                    'creators': [
-                                        {
-                                            'creator': 'charlie@example.org',
-                                            'timestamp': sometime()
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    }
-                ]
-            }, {
-                'id': 'eve',
-                'name': 'Eve Evil',
-                'data': {
-                    'names': [],
-                    'urls': []
-                }
-            }, {
-                'id': 'zoe',
-                'name': 'Zoe Zoolander',
-                'data': {
-                    'names': [],
-                    'urls': []
-                }
-            }
-        ]
-
-        return nodes
+    def __init__(creator, participants, type):
+        self.creator = None
+        self.participants = []
+        self.type = None

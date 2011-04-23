@@ -17,7 +17,18 @@ html, body {
     background-color: #f2f8ff;
     height: 100%;
     width: 100%;
-    }
+}
+
+.tip {
+    color: #2e3436;
+    background-color: #eeeeec;
+    border: 1px solid #2e3436;
+    padding: 1em;
+}
+
+.tip ul {
+    margin-left: 20px;
+}
 
 #legend {
     background-color: white;
