@@ -48,7 +48,17 @@ class Person(Entity):
             self.addUrl(urlstring)
 
     def __repr__(self):
-        return '<Person %s, %s>' % (self.names, self.urls)
+        return '<Person \n\t Names: %s, \n\t URLs: %s, \n\t Relations: %s>' % (self.names, self.urls, self.relations)
+
+    def _getSortedNames(self):
+        sortednames = self.names
+        sortednames.sort()
+        return sortednames
+
+    def _getSortedUrls(self):
+        sortedurls = self.urls
+        sortedurls.sort()
+        return sortedurls
 
     def addName(self, namestring):
         try:
@@ -81,6 +91,15 @@ class Name(Entity):
     def __repr__(self):
         return '<Name %s>' % (self.name)
 
+    def __eq__(self, other):
+        return (self.name == other.name)
+
+    def __lt__(self, other):
+        return (self.name < other.name)
+
+    def __gt__(self, other):
+        return (self.name > other.name)
+
 
 class Url(Entity):
     url = Field(Unicode(), primary_key=True)  # FIXME: URL data type
@@ -93,6 +112,15 @@ class Url(Entity):
 
     def __repr__(self):
         return '<Url %s>' % (self.url)
+
+    def __eq__(self, other):
+        return (self.url == other.url)
+
+    def __lt__(self, other):
+        return (self.url < other.url)
+
+    def __gt__(self, other):
+        return (self.url > other.url)
 
 
 class Relation(Entity):
@@ -111,7 +139,10 @@ class Relation(Entity):
 
     def __repr__(self):
         names = [person.names for person in self.participants]
-        return '<Relation %s: %s>' % (self.type, names)
+        return '\n\t\t<Relation %s: %s>' % (self.type, names)
 
     def addParticipant(self, person):
         self.participants.append(person)
+
+    def removeParticipant(self, person):
+        self.participants.remove(person)
