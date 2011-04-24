@@ -179,7 +179,6 @@ var g = new $jit.RGraph({
                 g.onClick(node.id);
 
                 $('#nodename').text(node.name);
-                console.log($('#nodename'));
                 displayItemList(node.data.names, '#namelist', false)
                 displayItemList(node.data.urls, '#urllist', true)
             }
