@@ -4,7 +4,7 @@
 
 <link rel="stylesheet" href="/css/reset.css"/>
 
-<script src="/js/lib/jquery-1.4.4.min.js"></script>
+<script src="/js/lib/jquery-1.5.2.min.js"></script>
 <script src="/js/lib/jit.js"></script>
 
 <style>
