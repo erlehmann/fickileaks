@@ -244,7 +244,7 @@ function displayRelationList(node, listselector, countselector) {
 
         var relationListDetails = document.createElement('details');
         var relation = document.createElement('summary');
-        relation.textContent = adjacency;
+        relation.textContent = adjacency.nodeTo.name;
 
         relationListDetails.appendChild(relation);
 
