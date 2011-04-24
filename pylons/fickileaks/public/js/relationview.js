@@ -178,6 +178,8 @@ var g = new $jit.RGraph({
             if (node) {
                 g.onClick(node.id);
 
+                $('#nodename').text(node.name);
+                console.log($('#nodename'));
                 displayItemList(node.data.names, '#namelist', false)
                 displayItemList(node.data.urls, '#urllist', true)
             }
@@ -189,13 +191,14 @@ var g = new $jit.RGraph({
 });
 
 function displayItemList(dict, selector, createHyperlinks) {
-    itemList = $(selector);
+    var itemList = $(selector);
     itemList.empty();
 
     $.each(dict, function(index, value) {
         var itemListEntry = document.createElement('li');
 
-        var item = document.createElement('b');
+        var itemListDetails = document.createElement('details');
+        var item = document.createElement('summary');
         if (createHyperlinks) {
             var hyperlink = document.createElement('a');
             hyperlink.href = hyperlink.textContent = index;
@@ -203,19 +206,22 @@ function displayItemList(dict, selector, createHyperlinks) {
         } else {
             item.textContent = index;
         }
-        itemListEntry.appendChild(item);
+        itemListDetails.appendChild(item);
 
         var creatorList = document.createElement('ul');
-        itemListEntry.appendChild(creatorList);
+        itemListDetails.appendChild(creatorList);
+        $(itemListEntry).appendWebshim(itemListDetails);
 
         $.each(value, function(index, value) {
             var creator = document.createElement('li');
             creator.textContent = value;
-            creatorList.appendChild(creator);            
+            creatorList.appendChild(creator);
         });
 
         itemList.append(itemListEntry);
     });
+
+    $.webshims.polyfill('details');
 }
 
 function radiusFix(g) {

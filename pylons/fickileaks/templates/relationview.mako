@@ -7,6 +7,10 @@
 <script src="/js/lib/jquery-1.5.2.min.js"></script>
 <script src="/js/lib/jit.js"></script>
 
+<script src="/js/lib/modernizr-1.7.min.js"></script>
+<script src="/js/lib/js-webshim/minified/polyfiller.js"></script>
+<script>$.webshims.polyfill('details');</script>
+
 <style>
 html, body {
     line-height: 1.5;
@@ -14,7 +18,8 @@ html, body {
 }
 
 ul {
-    margin-left: 20px;
+    list-style-position: inside;
+    margin-left: 10px;
 }
 
 body > header,
@@ -25,6 +30,7 @@ body > section,
     color: black;
     display: block;
     margin: 10px;
+    max-width: 200px;
     padding: 10px;
     z-index: 1;
 }
@@ -101,6 +107,10 @@ body > section > section > h1 {
     position: absolute;
 }
 
+#nodeinfo > section > ul {
+    list-style-type: none;
+}
+
 #graph {
     background-color: #f2f8ff;
     height: 100%;
@@ -148,15 +158,20 @@ function addInput() {
 </section>
 
 <section id="nodeinfo">
-    <h1>Angewählter Knoten</h1>
+    <h1 id="nodename">
+        Klicke einen Knoten!
+    </h1>
     <section>
-        <h1>Namen</h1>
+        <h1>Namen dieses Knotens</h1>
         <ul id="namelist"></ul>
     </section>
     <section>
-        <h1>URLs</h1>
+        <h1><abbr title="Uniform Resource Locator">URL</abbr>s dieses Knotens</h1>
         <ul id="urllist"></ul>
     </section>
+    <p>
+        Klicke auf die Dreiecke, um zu erfahren, wer etwas behauptet hat.
+    </p>
 </section>
 
 <div id=graph></div>
