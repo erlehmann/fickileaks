@@ -177,21 +177,28 @@ var g = new $jit.RGraph({
         onClick: function(node) {
             if (node) {
                 g.onClick(node.id);
-
-                $('#nodename').text(node.name);
-                displayItemList(node.data.names, '#namelist', false)
-                displayItemList(node.data.urls, '#urllist', true)
+                displayNodeInformation(node);
             }
-        },
+        }
     },
 
     interpolation: 'polar',
-    levelDistance: 200
+    levelDistance: 200 
 });
 
-function displayItemList(dict, selector, createHyperlinks) {
-    var itemList = $(selector);
+function displayNodeInformation(node) {
+    $('#nodename').text(node.name);
+    displayItemList(node.data.names, '#namelist', '#namecount', false);
+    displayItemList(node.data.urls, '#urllist', '#urlcount', true);
+    /*displayRelationList(node, '#relationlist', '#relationcount');*/
+}
+
+function displayItemList(dict, listselector, countselector, createHyperlinks) {
+    var itemList = $(listselector);
     itemList.empty();
+
+    var countNode = $(countselector);
+    var count = 0;
 
     $.each(dict, function(index, value) {
         var itemListEntry = document.createElement('li');
@@ -218,24 +225,62 @@ function displayItemList(dict, selector, createHyperlinks) {
         });
 
         itemList.append(itemListEntry);
+        count++;
     });
 
-    $.webshims.polyfill('details');
+    countNode.text(count);
 }
+
+function displayRelationList(node, listselector, countselector) {
+    var relationList = $(selector);
+    relationList.empty();
+
+    node.eachAdjacency(function(adjacency) {
+        
+        var relationListEntry = document.createElement('li');
+
+        var relationListDetails = document.createElement('details');
+        var relation = document.createElement('summary');
+        relation.textContent = adjacency;
+
+        relationListDetails.appendChild(relation);
+
+        var creatorList = document.createElement('ul');
+        relationListDetails.appendChild(creatorList);
+        $(relationListEntry).appendWebshim(relationListDetails);
+
+        relationList.append(relationListEntry);
+    });
+};
 
 function radiusFix(g) {
     // radius of circles should be proportional to number of adjacencies
-    g.graph.eachNode(
-        function(node) {
-            var count = 0;
-                node.eachAdjacency(
-                    function() {
-                    count++;
-                }
-            );
-            node.setData('dim', 16 + count*4);
+    g.graph.eachNode(function(node) {
+        var count = 0;
+        node.eachAdjacency(function() {
+            count++;
+        });
+        node.setData('dim', 16 + count*4);
+    });
+}
+
+function getPleasureCenter(graph) {
+    var centerNode;
+    var centerNodeAdjacencies = 0;
+
+    g.graph.eachNode(function(node) {
+        var count = 0;
+        node.eachAdjacency(function() {
+            count++;
+        });
+
+        if (count > centerNodeAdjacencies) {
+            centerNode = node;
+            centerNodeAdjacencies = count;
         }
-    );
+    });
+
+    return centerNode;
 }
 
 var req = new XMLHttpRequest();
@@ -246,8 +291,13 @@ req.onreadystatechange = function (aEvt) {
             var json = JSON.parse(req.responseText);
             g.loadJSON(json);
 
-            radiusFix(g)
-            g.refresh()
+            radiusFix(g);
+            g.compute();
+
+            var centerNode = getPleasureCenter(g);
+            g.onClick(centerNode.id);
+            displayNodeInformation(centerNode);
+            g.refresh();
         } else {
             alert("Could not reach fickileaks JSON API.");
         }

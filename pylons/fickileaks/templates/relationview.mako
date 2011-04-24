@@ -107,7 +107,7 @@ body > section > section > h1 {
     position: absolute;
 }
 
-#nodeinfo > section > ul {
+#nodeinfo > details > ul {
     list-style-type: none;
 }
 
@@ -158,17 +158,28 @@ function addInput() {
 </section>
 
 <section id="nodeinfo">
-    <h1 id="nodename">
-        Klicke einen Knoten!
-    </h1>
-    <section>
-        <h1>Namen dieses Knotens</h1>
+    <h1 id="nodename">Klicke einen Knoten!</h1>
+    <details>
+        <summary>
+            Namen
+            (<span id="namecount"></span>)
+        </summary>
         <ul id="namelist"></ul>
-    </section>
-    <section>
-        <h1><abbr title="Uniform Resource Locator">URL</abbr>s dieses Knotens</h1>
+    </details>
+    <details>
+        <summary>
+            <abbr title="Uniform Resource Locator">URL</abbr>s
+            (<span id="urlcount"></span>)
+        </summary>
         <ul id="urllist"></ul>
-    </section>
+    </details>
+    <details>
+        <summary>
+            Beziehungen
+            (<span id="relationcount"></span>)
+        </summary>
+        <ul id="relationlist"></ul>
+    </details>
     <p>
         Klicke auf die Dreiecke, um zu erfahren, wer etwas behauptet hat.
     </p>
