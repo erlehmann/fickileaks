@@ -62,6 +62,7 @@ body > section > section > h1 {
 
     #legend > ul {
         list-style-type: none;
+        margin: 0;
     }
 
     #legend .grope {
