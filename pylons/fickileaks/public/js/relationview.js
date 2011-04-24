@@ -190,7 +190,7 @@ function displayNodeInformation(node) {
     $('#nodename').text(node.name);
     displayItemList(node.data.names, '#namelist', '#namecount', false);
     displayItemList(node.data.urls, '#urllist', '#urlcount', true);
-    /*displayRelationList(node, '#relationlist', '#relationcount');*/
+    displayRelationList(node, '#relationlist', '#relationcount');
 }
 
 function displayItemList(dict, listselector, countselector, createHyperlinks) {
@@ -232,8 +232,11 @@ function displayItemList(dict, listselector, countselector, createHyperlinks) {
 }
 
 function displayRelationList(node, listselector, countselector) {
-    var relationList = $(selector);
+    var relationList = $(listselector);
     relationList.empty();
+
+    var countNode = $(countselector);
+    var count = 0;
 
     node.eachAdjacency(function(adjacency) {
         
@@ -250,7 +253,10 @@ function displayRelationList(node, listselector, countselector) {
         $(relationListEntry).appendWebshim(relationListDetails);
 
         relationList.append(relationListEntry);
+        count++;
     });
+
+    countNode.text(count);
 };
 
 function radiusFix(g) {

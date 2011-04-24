@@ -175,7 +175,7 @@ function addInput() {
     </details>
     <details>
         <summary>
-            Beziehungen
+            Kontakte
             (<span id="relationcount"></span>)
         </summary>
         <ul id="relationlist"></ul>
