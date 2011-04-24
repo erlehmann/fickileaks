@@ -163,27 +163,6 @@ var g = new $jit.RGraph({
         textBaseline: 'bottom'
     },
 
-    Tips: {
-        enable: true,
-        onShow: function(tip, node) {
-            var data = node.data;
-
-            html = '<h1>Namen</h1>';
-            html += '<ul>'
-            $.each(data.names, function(index, value) {
-                html += '<li>' + '<b>' + index + '</b>: ' + value + '</li>';
-                });
-            html += '</ul>';
-            html += '<h1>URLs</h1>';
-            html += '<ul>'
-            $.each(data.urls, function(index, value) {
-                html += '<li><b><a href="' + index + '">' + index + '</a></b>: ' + value + '</li>';
-                });
-            html += '</ul>';
-            tip.innerHTML = html;
-        }
-    },
-
     Events: {
         enable: true,
 
