@@ -198,13 +198,46 @@ var g = new $jit.RGraph({
         onClick: function(node) {
             if (node) {
                 g.onClick(node.id);
+
+                displayItemList(node.data.names, '#namelist', false)
+                displayItemList(node.data.urls, '#urllist', true)
             }
-        }
+        },
     },
 
     interpolation: 'polar',
     levelDistance: 200
 });
+
+function displayItemList(dict, selector, createHyperlinks) {
+    itemList = $(selector);
+    itemList.empty();
+
+    $.each(dict, function(index, value) {
+        var itemListEntry = document.createElement('li');
+
+        var item = document.createElement('b');
+        if (createHyperlinks) {
+            var hyperlink = document.createElement('a');
+            hyperlink.href = hyperlink.textContent = index;
+            item.appendChild(hyperlink);
+        } else {
+            item.textContent = index;
+        }
+        itemListEntry.appendChild(item);
+
+        var creatorList = document.createElement('ul');
+        itemListEntry.appendChild(creatorList);
+
+        $.each(value, function(index, value) {
+            var creator = document.createElement('li');
+            creator.textContent = value;
+            creatorList.appendChild(creator);            
+        });
+
+        itemList.append(itemListEntry);
+    });
+}
 
 function radiusFix(g) {
     // radius of circles should be proportional to number of adjacencies

@@ -15,7 +15,7 @@ log = logging.getLogger(__name__)
 
 class RelationsController(BaseController):
 
-    def index(self):
+    def view(self):
         return render('relationview.mako')
 
     @jsonify

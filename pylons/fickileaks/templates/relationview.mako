@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<title>relation view</title>
+<title>Fickileaks — Beziehungen anschauen</title>
 
 <link rel="stylesheet" href="/css/reset.css"/>
 
@@ -13,38 +13,52 @@ html, body {
     height: 100%;
 }
 
-#graph {
-    background-color: #f2f8ff;
-    height: 100%;
-    width: 100%;
-}
-
-.tip {
-    color: #2e3436;
-    background-color: #eeeeec;
-    border: 1px solid #2e3436;
-    padding: 1em;
-}
-
-.tip ul {
+ul {
     margin-left: 20px;
 }
 
-#legend {
+body > header,
+body > section,
+.tip {
     background-color: white;
-    border: 2px solid black;
-    border-radius: 1em;
+    border: 1px solid #2e3436;
     color: black;
     display: block;
-    padding: 0.5em 1em;
-    position: absolute;
-    right: 1em;
-    top: 1em;
+    margin: 10px;
+    padding: 10px;
+    z-index: 1;
 }
 
-    #legend > h1 {
-        display: none;
-    }
+body > header > h1 {
+    font-size: 2em;
+}
+
+body > section > h1 {
+    font-size: 1.5em;
+}
+
+body > section > section > h1 {
+    font-size: 1.25em;
+}
+
+#header {
+    top: 10px;
+    left: 10px;
+    position: absolute;
+}
+
+#queryform {
+    display: inline-block;
+    right: 10px;
+    top: 10px;
+    position: absolute;
+}
+
+#legend {
+    bottom: 10px;
+    left: 10px;
+    position: absolute;
+}
 
     #legend > ul {
         list-style-type: none;
@@ -79,20 +93,71 @@ html, body {
         background-color: white;
         color: #ad7fa8;
     }
+
+#nodeinfo {
+    bottom: 10px;
+    right: 10px;
+    position: absolute;
+}
+
+#graph {
+    background-color: #f2f8ff;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+#graph,
+#graph * {
+    z-index: 0 !important;
+}
 </style>
 
-<div id=graph></div>
+<script>
+function addInput() {
+    $()
+}
+</script>
+
+<header id="header">
+    <h1>Fickileaks</h1>
+    <h2>Beziehungen anschauen</h2>
+</header>
+
+<section id="queryform">
+    <h1>Filterung</h1>
+    <form>
+        <input type=text/>
+        <button onclick="addInput(this)">+</button>
+    </form>
+</section>
 
 <section id="legend">
-    <h1>Legend</h1>
+    <h1>Legende</h1>
     <ul>
-        <li><span class="grope">█</span> Fummeln</li>
-        <li><span class="kiss">█</span> Küssen</li>
-        <li><span class="fuck">█</span> Vaginalsex</li>
-        <li><span class="oral">█</span> Oralsex</li>
-        <li><span class="anal">█</span> Analsex</li>
-        <li><span class="sm">█</span> SM-Spielchen</li>
+        <li><span class="grope">█</span> Fummeln
+        <li><span class="kiss">█</span> Küssen
+        <li><span class="fuck">█</span> Vaginalsex
+        <li><span class="oral">█</span> Oralsex
+        <li><span class="anal">█</span> Analsex
+        <li><span class="sm">█</span> SM-Spielchen
     </ul>
 </section>
+
+<section id="nodeinfo">
+    <h1>Angewählter Knoten</h1>
+    <section>
+        <h1>Namen</h1>
+        <ul id="namelist"></ul>
+    </section>
+    <section>
+        <h1>URLs</h1>
+        <ul id="urllist"></ul>
+    </section>
+</section>
+
+<div id=graph></div>
 
 <script src="/js/relationview.js"></script>
