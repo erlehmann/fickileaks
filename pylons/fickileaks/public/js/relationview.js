@@ -226,7 +226,7 @@ var g = new $jit.RGraph({
     },
 
     interpolation: 'polar',
-    levelDistance: 200 
+    levelDistance: 200
 });
 
 function displayNodeInformation(node) {
@@ -282,7 +282,7 @@ function displayRelationList(node, listselector, countselector) {
     var count = 0;
 
     node.eachAdjacency(function(adjacency) {
-        
+
         var relationListEntry = document.createElement('li');
 
         var relationListDetails = document.createElement('details');
