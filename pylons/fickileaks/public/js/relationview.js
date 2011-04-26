@@ -41,6 +41,49 @@ $jit.RGraph.Plot.NodeTypes.implement({
     }
 });
 
+$jit.RGraph.Plot.NodeTypes.implement({
+    'sun': {
+       'render': function(node, canvas) {
+            var c = canvas.getCtx();
+            var dim = node.getData('dim');
+            var sradius = dim*1.5;
+            var pos = node.getPos();  /* polar coordinates */
+            var cpos = node.getPos().toComplex();  /* complex coordinates */
+
+            c.lineWidth = node.getData('lineWidth') * 2;
+            c.strokeStyle = '#edd400'; // Butter 2
+            c.fillStyle = '#fce94f'; // Butter
+
+            var angle = Math.PI / 9;
+            c.save();
+            c.translate(cpos.x, cpos.y);
+            c.beginPath();
+            c.moveTo(sradius, 0);
+            for (var i = 0; i < 17; i++) {
+                    c.rotate(angle);
+                if (i % 2 == 0) {
+                    c.lineTo((sradius / 0.35) * 0.2, 0);
+                } else {
+                    c.lineTo(sradius, 0);
+                }
+            }
+            c.closePath();
+            c.fill();
+            c.stroke();
+            c.restore();
+
+            this.nodeHelper.circle.render('fill', cpos, dim, canvas);
+            this.nodeHelper.circle.render('stroke', cpos, dim, canvas);
+        },
+        'contains': function(node, pos) {
+            var dim = node.getData('dim');
+            var npos = node.getPos().toComplex();
+
+            return this.nodeHelper.circle.contains(npos, pos, dim*1.5);
+        }
+    }
+});
+
 function correctWidth(width) {
     return width;
 }
@@ -297,10 +340,12 @@ req.onreadystatechange = function (aEvt) {
             var json = JSON.parse(req.responseText);
             g.loadJSON(json);
 
+            var centerNode = getPleasureCenter(g);
+            centerNode.setData('type', 'sun');
+
             radiusFix(g);
             g.compute();
 
-            var centerNode = getPleasureCenter(g);
             g.onClick(centerNode.id);
             displayNodeInformation(centerNode);
             g.refresh();
