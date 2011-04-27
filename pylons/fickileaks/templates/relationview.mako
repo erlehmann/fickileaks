@@ -3,8 +3,10 @@
 <title>Fickileaks — Beziehungen anschauen</title>
 
 <link rel="stylesheet" href="/css/reset.css"/>
+<link rel="stylesheet" href="/css/lib/jquery-ui/jquery-ui-1.8.12.custom.css"/>
 
 <script src="/js/lib/jquery-1.5.2.min.js"></script>
+<script src="/js/lib/jquery-ui-1.8.12.custom.min.js"></script>
 <script src="/js/lib/jit.js"></script>
 
 <script src="/js/lib/modernizr-1.7.min.js"></script>
@@ -140,9 +142,15 @@ function addInput() {
 <section id="queryform">
     <h1>Filterung</h1>
     <form>
-        <input type=text/>
+        <input type=email class="autocomplete">
         <button onclick="addInput(this)">+</button>
     </form>
+    <script>
+        $("[type=email].autocomplete").autocomplete({
+            source: "/users/autocomplete"
+            /*minLength: 2*/
+            });
+    </script>
 </section>
 
 <section id="legend">
