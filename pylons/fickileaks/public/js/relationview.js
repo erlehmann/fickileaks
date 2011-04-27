@@ -332,27 +332,30 @@ function getPleasureCenter(graph) {
     return centerNode;
 }
 
+function graphRender(json) {
+    g.loadJSON(json);
+
+    var centerNode = getPleasureCenter(g);
+    centerNode.setData('type', 'sun');
+
+    radiusFix(g);
+    g.compute();
+
+    g.onClick(centerNode.id);
+    displayNodeInformation(centerNode);
+    g.refresh();
+}
+
 var req = new XMLHttpRequest();
 req.open('GET', 'infovis', true);
 req.onreadystatechange = function (aEvt) {
     if (req.readyState == 4) {
         if(req.status == 200) {
             var json = JSON.parse(req.responseText);
-            g.loadJSON(json);
-
-            var centerNode = getPleasureCenter(g);
-            centerNode.setData('type', 'sun');
-
-            radiusFix(g);
-            g.compute();
-
-            g.onClick(centerNode.id);
-            displayNodeInformation(centerNode);
-            g.refresh();
+            graphRender(json);
         } else {
             alert("Could not reach fickileaks JSON API.");
         }
     }
 };
 req.send(null);
-
