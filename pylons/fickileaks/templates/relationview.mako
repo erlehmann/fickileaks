@@ -13,10 +13,23 @@
 <script src="/js/lib/js-webshim/minified/polyfiller.js"></script>
 <script>$.webshims.polyfill('details');</script>
 
+<script src="/js/relationview.js"></script>
+
 <style>
 html, body {
     line-height: 1.5;
     height: 100%;
+}
+
+button {
+    box-sizing: border-box;
+    line-height: 16px;
+    padding: 5px;
+    width: 100%;
+}
+
+button > img {
+    vertical-align: text-bottom;
 }
 
 ul {
@@ -55,7 +68,7 @@ body > section > section > h1 {
     position: absolute;
 }
 
-#queryform {
+#filters {
     display: inline-block;
     right: 10px;
     top: 10px;
@@ -139,17 +152,37 @@ function addInput() {
     <h2>Beziehungen anschauen</h2>
 </header>
 
-<section id="queryform">
-    <h1>Filterung</h1>
+<section id="filters">
+    <h1>Quellen</h1>
     <form>
-        <input type=email class="autocomplete">
-        <button onclick="addInput(this)">+</button>
+        <input type="email" class="autocomplete">
     </form>
+    <button id="add">
+        <img src="/img/icons/list-add.png" alt="+">
+        Hinzufügen
+    </button>
+    <ul id="querylist"></ul>
     <script>
-        $("[type=email].autocomplete").autocomplete({
+        $('input[type=email].autocomplete').autocomplete({
             source: "/users/autocomplete"
             /*minLength: 2*/
             });
+
+        $('#add').click(function() {
+            var value = $('input[type=email].autocomplete').val();
+            $('#querylist').append($('<li>' + value + '</li>'));
+            $('input[type=email].autocomplete').val('');
+
+            var query = {
+                users: []
+            }
+            $('#querylist > li').each(function(index) {
+                query['users'].push($(this).text());
+            });
+            $.get('/relations/infovis', query, function(json){
+                console.log(json);
+            });
+        });
     </script>
 </section>
 
