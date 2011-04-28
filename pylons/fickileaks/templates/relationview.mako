@@ -163,25 +163,38 @@ function addInput() {
     </button>
     <ul id="querylist"></ul>
     <script>
-        $('input[type=email].autocomplete').autocomplete({
+        var inputField = $('input[type=email].autocomplete');
+        inputField.autocomplete({
             source: "/users/autocomplete"
             /*minLength: 2*/
             });
 
         $('#add').click(function() {
-            var value = $('input[type=email].autocomplete').val();
-            $('#querylist').append($('<li>' + value + '</li>'));
-            $('input[type=email].autocomplete').val('');
+            var value = inputField.val();
 
-            var query = {
-                users: []
-            }
             $('#querylist > li').each(function(index) {
-                query['users'].push($(this).text());
+                /* empty input field if value has already been added */
+                if ($(this).text() == value) {
+                    inputField.val('');
+                }
             });
-            $.get('/relations/infovis', query, function(json){
-                console.log(json);
-            });
+
+            /* add value if it is not empty */
+            if (inputField.val() != '') {
+                $('#querylist').append($('<li>' + value + '</li>'));
+                inputField.val('');
+
+                /* build query */
+                var query = {
+                    users: []
+                }
+                $('#querylist > li').each(function(index) {
+                    query['users'].push($(this).text());
+                });
+                $.get('/relations/infovis', query, function(json){
+                    console.log(json);
+                });
+            }
         });
     </script>
 </section>
