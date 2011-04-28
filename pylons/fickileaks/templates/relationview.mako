@@ -6,16 +6,30 @@
 <link rel="stylesheet" href="/css/lib/jquery-ui/jquery-ui-1.8.12.custom.css"/>
 
 <script src="/js/lib/jquery-1.5.2.min.js"></script>
+<script src="/js/lib/%24.include.js"></script>
+
+<script>
+    $.include(
+        '/js/relationview.js',
+        /* dependencies: node and graph types */
+        [
+            $.include(
+                '/js/nodes.js',
+                [
+                    $.include('/js/lib/jit.js')
+                ]
+            ),
+            $.include('/js/edges.js')
+        ]
+    );
+</script>
+
 <script src="/js/lib/jquery-ui-1.8.12.custom.min.js"></script>
-<script src="/js/lib/jit.js"></script>
+<script src=""></script>
 
 <script src="/js/lib/modernizr-1.7.min.js"></script>
 <script src="/js/lib/js-webshim/minified/polyfiller.js"></script>
 <script>$.webshims.polyfill('details');</script>
-
-<script src="/js/nodes.js"></script>
-<script src="/js/edges.js"></script>
-<script src="/js/relationview.js"></script>
 
 <style>
 html, body {
