@@ -8,28 +8,21 @@
 <script src="/js/lib/jquery-1.5.2.min.js"></script>
 <script src="/js/lib/%24.include.js"></script>
 
-<script>
-    $.include(
-        '/js/relationview.js',
-        /* dependencies: node and graph types */
-        [
-            $.include(
-                '/js/nodes.js',
-                [
-                    $.include('/js/lib/jit.js')
-                ]
-            ),
-            $.include('/js/edges.js')
-        ]
-    );
-</script>
-
-<script src="/js/lib/jquery-ui-1.8.12.custom.min.js"></script>
-<script src=""></script>
-
 <script src="/js/lib/modernizr-1.7.min.js"></script>
 <script src="/js/lib/js-webshim/minified/polyfiller.js"></script>
-<script>$.webshims.polyfill('details');</script>
+
+<script>
+    $.webshims.polyfill('details');
+
+    $.include('/js/relationview.js', [
+        $.include('/js/edges.js', [
+            $.include('/js/nodes.js', [
+                $.include('/js/lib/jit.js')
+            ]),
+        ]),
+        $.include('/js/lib/jquery-ui-1.8.12.custom.min.js')
+    ]);
+</script>
 
 <style>
 html, body {
@@ -157,12 +150,6 @@ body > section > section > h1 {
 }
 </style>
 
-<script>
-function addInput() {
-    $()
-}
-</script>
-
 <header id="header">
     <h1>Fickileaks</h1>
     <h2>Beziehungen anschauen</h2>
@@ -178,41 +165,6 @@ function addInput() {
         Hinzufügen
     </button>
     <ul id="querylist"></ul>
-    <script>
-        var inputField = $('input[type=email].autocomplete');
-        inputField.autocomplete({
-            source: "/users/autocomplete"
-            /*minLength: 2*/
-            });
-
-        $('#add').click(function() {
-            var value = inputField.val();
-
-            $('#querylist > li').each(function(index) {
-                /* empty input field if value has already been added */
-                if ($(this).text() == value) {
-                    inputField.val('');
-                }
-            });
-
-            /* add value if it is not empty */
-            if (inputField.val() != '') {
-                $('#querylist').append($('<li>' + value + '</li>'));
-                inputField.val('');
-
-                /* build query */
-                var query = {
-                    users: []
-                }
-                $('#querylist > li').each(function(index) {
-                    query['users'].push($(this).text());
-                });
-                $.get('/relations/infovis', query, function(json){
-                    console.log(json);
-                });
-            }
-        });
-    </script>
 </section>
 
 <section id="legend">
@@ -256,5 +208,3 @@ function addInput() {
 </section>
 
 <div id=graph></div>
-
-<script src="/js/relationview.js"></script>

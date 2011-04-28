@@ -185,3 +185,37 @@ req.onreadystatechange = function (aEvt) {
     }
 };
 req.send(null);
+
+var inputField = $('input[type=email].autocomplete');
+inputField.autocomplete({
+    source: "/users/autocomplete"
+    /*minLength: 2*/
+    });
+
+$('#add').click(function() {
+    var value = inputField.val();
+
+    $('#querylist > li').each(function(index) {
+        /* empty input field if value has already been added */
+        if ($(this).text() == value) {
+            inputField.val('');
+        }
+    });
+
+    /* add value if it is not empty */
+    if (inputField.val() != '') {
+        $('#querylist').append($('<li>' + value + '</li>'));
+        inputField.val('');
+
+        /* build query */
+        var query = {
+            users: []
+        }
+        $('#querylist > li').each(function(index) {
+            query['users'].push($(this).text());
+        });
+        $.get('/relations/infovis', query, function(json){
+            console.log(json);
+        });
+    }
+});
