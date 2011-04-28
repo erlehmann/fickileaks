@@ -13,6 +13,8 @@
 <script src="/js/lib/js-webshim/minified/polyfiller.js"></script>
 <script>$.webshims.polyfill('details');</script>
 
+<script src="/js/nodes.js"></script>
+<script src="/js/edges.js"></script>
 <script src="/js/relationview.js"></script>
 
 <style>
