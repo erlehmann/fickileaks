@@ -160,18 +160,7 @@ function getPleasureCenter(graph) {
 
 function graphRender(json) {
     g.loadJSON(json);
-    graphChangeHelper();
-}
 
-function graphMorph(json) {
-    g.op.morph(json, {
-        type: 'fade',
-        duration: 1500
-    });
-    graphChangeHelper();
-}
-
-function graphChangeHelper() {
     var centerNode = getPleasureCenter(g);
     centerNode.setData('type', 'sun');
 
@@ -226,7 +215,7 @@ $('#add').click(function() {
             query['users'].push($(this).text());
         });
         $.get('/relations/infovis', query, function(json){
-            graphMorph(json['nodes']);
+            graphRender(json['nodes']);
         });
     }
 });
