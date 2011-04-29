@@ -189,8 +189,7 @@ class RelationsController(BaseController):
             'query': {
                 'datetime-start': datetime.min.isoformat(),
                 'datetime-end': datetime.max.isoformat(),
-                'users': [
-                ],
+                'users': userlist,
                 'relations': [
                     'GROPE',
                     'KISS',
