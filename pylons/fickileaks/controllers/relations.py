@@ -5,7 +5,7 @@ from pylons.decorators import jsonify
 from pylons.controllers.util import abort, redirect
 
 from fickileaks.lib.base import BaseController, render
-from fickileaks.model import Relation, Person
+from fickileaks.model import Relation, Person, User
 
 from sqlalchemy.exc import IntegrityError
 
@@ -44,7 +44,11 @@ class RelationsController(BaseController):
 
     @jsonify
     def infovis(self):
-        query = Relation.query.all()
+        userlist = request.params.getall('users[]')
+        if userlist:
+            query = Relation.query.join('creator').filter(User.email.in_(userlist)).all()
+        else:
+            query = Relation.query.all()
 
         nodeset = set([])
         nodecache = {}
@@ -180,7 +184,28 @@ class RelationsController(BaseController):
 
             nodelist.append(serialnode)
 
-        return nodelist
+        json = {
+            'nodes': nodelist,
+            'query': {
+                'datetime-start': datetime.min.isoformat(),
+                'datetime-end': datetime.max.isoformat(),
+                'users': [
+                ],
+                'relations': [
+                    'GROPE',
+                    'KISS',
+                    'FUCK',
+                    'ORAL',
+                    'ANAL',
+                    'SM'
+                ]
+            },
+            'result': {
+                'url': None,
+                'datetime': datetime.now().isoformat()
+            }
+        }
+        return json
 
 class PersonContainer:
     "Data container for presentation purposes, filled by Person entity."

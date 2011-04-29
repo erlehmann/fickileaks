@@ -215,7 +215,7 @@ $('#add').click(function() {
             query['users'].push($(this).text());
         });
         $.get('/relations/infovis', query, function(json){
-            console.log(json);
+            graphRender(json['nodes']);
         });
     }
 });
