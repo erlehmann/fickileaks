@@ -197,6 +197,20 @@ function graphRender(json) {
     g.refresh();
 }
 
+function graphUpdate() {
+    /* build query */
+    var query = {
+        users: []
+    }
+    $('#querylist > li').each(function(index) {
+        /* contents()[0] gives the text node containing the value */
+        query['users'].push($(this).contents()[0].textContent);
+    });
+    $.get('/relations/infovis', query, function(json){
+        graphRender(json['nodes']);
+    });
+}
+
 var req = new XMLHttpRequest();
 req.open('GET', 'infovis', true);
 req.onreadystatechange = function (aEvt) {
@@ -217,7 +231,7 @@ inputField.autocomplete({
     /*minLength: 2*/
     });
 
-$('#add').click(function() {
+$('.add').click(function() {
     var value = inputField.val();
 
     $('#querylist > li').each(function(index) {
@@ -229,18 +243,13 @@ $('#add').click(function() {
 
     /* add value if it is not empty */
     if (inputField.val() != '') {
-        $('#querylist').append($('<li>' + value + '</li>'));
+        $('#querylist').append($('<li>' + value + '<button type="button" class="remove"><img src="/img/icons/list-remove.png" alt="Entfernen"></button></li>'));
         inputField.val('');
 
-        /* build query */
-        var query = {
-            users: []
-        }
-        $('#querylist > li').each(function(index) {
-            query['users'].push($(this).text());
+        $('.remove').click(function() {
+            $(this.parentNode).remove();
+            graphUpdate()
         });
-        $.get('/relations/infovis', query, function(json){
-            graphRender(json['nodes']);
-        });
+        graphUpdate()
     }
 });

@@ -31,10 +31,12 @@ html, body {
 }
 
 button {
-    box-sizing: border-box;
     line-height: 16px;
-    padding: 5px;
-    width: 100%;
+    padding: 4px;
+}
+
+button.add,
+button.remove {
 }
 
 button > img {
@@ -82,6 +84,24 @@ body > section > section > h1 {
     right: 10px;
     top: 10px;
     position: absolute;
+}
+
+#filters > form > input {
+    max-width: 152px;
+}
+
+#filters > ul {
+    list-style: none;
+}
+
+#filters > ul > li {
+    position: relative;
+    line-height: 32px;
+}
+
+#filters > ul > li > button {
+    position: absolute;
+    right: 0px;
 }
 
 #legend {
@@ -159,11 +179,10 @@ body > section > section > h1 {
     <h1>Quellen</h1>
     <form>
         <input type="email" class="autocomplete">
+        <button type="button" class="add">
+            <img src="/img/icons/list-add.png" alt="Hinzufügen">
+        </button>
     </form>
-    <button id="add">
-        <img src="/img/icons/list-add.png" alt="+">
-        Hinzufügen
-    </button>
     <ul id="querylist"></ul>
 </section>
 
