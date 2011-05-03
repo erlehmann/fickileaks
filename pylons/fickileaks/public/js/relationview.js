@@ -148,7 +148,6 @@ function centerFix(g) {
                     '$alpha': 0
                 }
             );
-            console.log(centerNodes.length, centerNodes[0], centerNodes[1]);
         }
     } while (centerNodes.length > 1);
 }
