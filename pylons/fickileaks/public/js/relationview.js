@@ -128,6 +128,31 @@ function displayRelationList(node, listselector, countselector) {
     countNode.text(count);
 };
 
+function centerFix(g) {
+    var centerNodes = [];
+    do {
+        centerNodes = [];
+        g.compute();
+        g.graph.eachNode(function(node) {
+            if (node.pos.rho == 0) {
+                centerNodes.push(node);
+            }
+        });
+        if (centerNodes.length > 1) {
+            /* connect center nodes through invisible line */
+            g.graph.addAdjacence(
+                centerNodes[0],
+                centerNodes[1],
+                {
+                    '$type': 'line',
+                    '$alpha': 0
+                }
+            );
+            console.log(centerNodes.length, centerNodes[0], centerNodes[1]);
+        }
+    } while (centerNodes.length > 1);
+}
+
 function radiusFix(g) {
     // radius of circles should be proportional to number of adjacencies
     g.graph.eachNode(function(node) {
@@ -161,6 +186,7 @@ function getPleasureCenter(graph) {
 function graphRender(json) {
     g.loadJSON(json);
 
+    centerFix(g);
     var centerNode = getPleasureCenter(g);
     centerNode.setData('type', 'sun');
 
