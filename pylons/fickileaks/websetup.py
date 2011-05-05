@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Setup the fickileaks application"""
 import logging
 
@@ -22,41 +24,59 @@ def setup_app(command, conf, vars):
     # Populate the database on 'paster setup-app'
 
     # Users
-    alice = User("alice@example.org", "123456")
-    bob = User("bob@example.org", "654321")
-    charlie = User("charlie@example.org", "password")
+    alice = User("alice@host.invalid", "123456")
+    bob = User("bob@host.invalid", "123456")
+    charlie = User("charlie@host.invalid", "123456")
 
     # User alice claims to be aware of the existence of these persons
-    ap0 = Person(alice, ["Alice Alison"], ["http://example.com/alice72"])
-    ap1 = Person(alice, ["Bob Bobson"], ["http://example.com/bob81"])
-    ap2 = Person(alice, ["Charlie Charleson"], ["http://example.com/charlie90"])
-    ap3 = Person(alice, ["Dave Davidson"], ["http://example.com/davedavedave"])
+    ap0 = Person(alice, ["Maine"], ["http://example.net/~maine"])
+    ap1 = Person(alice, ["Alabama"], ["http://example.net/~alabama", "https://example.com/~alabama"])
+    ap2 = Person(alice, ["Delaware"], ["http://example.com/~delaware"])
+    ap3 = Person(alice, ["Georgia"], ["http://example.org/~georgia"])
+    ap4 = Person(alice, ["Montana"], ["http://example.net/~montana"])
+    ap5 = Person(alice, ["Indiana"], ["http://example.com/~indiana"])
+    ap6 = Person(alice, [u"ˌkælɪˈfɔrnjə"], ["http://example.com/~california"])
+    ap7 = Person(alice, [u"ˌpɛnsɪlˈveɪnjə"], ["http://example.net/~pennsylvania"])
 
     # User alice claims to be aware of the existence of these relationships
-    ar0 = Relation(alice, 'FUCK', [ap0, ap1])
-    ar1 = Relation(alice, 'FUCK', [ap0, ap2])
-    ar2 = Relation(alice, 'KISS', [ap0, ap3])
+    Relation(alice, 'KISS', [ap1, ap2])
+    Relation(alice, 'FUCK', [ap1, ap2])
+    Relation(alice, 'KISS', [ap0, ap3])
+    Relation(alice, 'KISS', [ap3, ap4])
+    Relation(alice, 'FUCK', [ap3, ap4])
+    Relation(alice, 'KISS', [ap0, ap5])
+    Relation(alice, 'KISS', [ap2, ap3])
+    Relation(alice, 'KISS', [ap3, ap5])
+    Relation(alice, 'GROPE', [ap3, ap5])
+    Relation(alice, 'KISS', [ap3, ap6])
+    Relation(alice, 'FUCK', [ap5, ap6])
+    Relation(alice, 'GROPE', [ap0, ap7])
+    Relation(alice, 'KISS', [ap0, ap7])
+    Relation(alice, 'FUCK', [ap0, ap7])
+    Relation(alice, 'ORAL', [ap0, ap7])
 
     # User bob claims to be aware of the existence of these persons
-    bp0 = Person(bob, ["Alise"], ["http://example.net/~alice"])
-    bp1 = Person(bob, ["Bobby"], ["http://example.com/bob81"])
-    bp2 = Person(bob, ["Dave the Face"], ["http://example.com/davedavedave"])
+    bp0 = Person(bob, ["Alabama"], ["http://example.net/~alabama"])
+    bp1 = Person(bob, ["Delaware"], ["http://example.com/~delaware"])
+    bp2 = Person(bob, ["Indiana"], ["http://example.com/~indiana"])
+    bp3 = Person(bob, [u"ˌkælɪˈfɔrnjə"], ["http://example.com/~california"])
 
     # User bob claims to be aware of the existence of these relationships
-    br0 = Relation(bob, 'ANAL', [bp0, bp1])
-    br1 = Relation(bob, 'ANAL', [bp0, bp2])
-    br2 = Relation(bob, 'KISS', [bp1, bp2])
+    Relation(bob, 'KISS', [bp0, bp1])
+    Relation(bob, 'FUCK', [bp0, bp1])
+    Relation(bob, 'GROPE', [bp2, bp3])
 
     # User charlie claims to be aware of the existence of these persons
-    cp0 = Person(charlie, ["Alice"], ["http://example.com/alice72", "http://example.net/~alice"])
-    cp1 = Person(charlie, ["Bob from Berlin"], ["http://example.com/bob81"])
-    cp2 = Person(charlie, ["Davey"], ["http://example.com/davedavedave"])
-    cp3 = Person(charlie, ["Emily", "Em"], ["http://emily.example.net"])
+    cp0 = Person(charlie, ["Maine"], ["http://example.net/~maine"])
+    cp1 = Person(charlie, ["Georgia", u"ˈdʒɔrdʒə"], ["http://example.org/~georgia", "http://example.net/memory"])
 
     # User charlie claims to be aware of the existence of these relationships
-    cr0 = Relation(charlie, 'KISS', [cp0, cp1])
-    cr1 = Relation(charlie, 'KISS', [cp0, cp2])
-    cr2 = Relation(charlie, 'KISS', [cp1, cp3])
-    cr3 = Relation(charlie, 'SM', [cp2, cp3])
+
+    Relation(charlie, 'GROPE', [cp0, cp1])
+    Relation(charlie, 'KISS', [cp0, cp1])
+    Relation(charlie, 'FUCK', [cp0, cp1])
+    Relation(charlie, 'ORAL', [cp0, cp1])
+    Relation(charlie, 'ANAL', [cp0, cp1])
+    Relation(charlie, 'SM', [cp0, cp1])
 
     Session.commit()
